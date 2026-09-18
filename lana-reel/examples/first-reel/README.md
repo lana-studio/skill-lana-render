@@ -19,10 +19,10 @@ that shuffle JSON files around. That's the whole "Pentium 4" idea.
 ## Before you start
 
 1. Create an account at Lana Studio.
-2. `claude mcp add --transport http lana https://mcp.lanastudio.pe/mcp`
+2. `claude mcp add --scope user --transport http lana https://mcp.lanastudio.pe/mcp`
 3. In `claude`, run `/mcp`, pick `lana`, and Authenticate (the first 401 is
    normal — it triggers RFC 9728 discovery, then DCR, then PKCE).
-4. Install the skill (`INSTALAR.md` at the root of the download).
+4. Install the skill (the repository's `README.md`, section "Install").
 5. Copy this folder somewhere of your own and work there:
    `cp -R ~/.claude/skills/lana-reel/examples/first-reel ~/reels/first-reel && cd ~/reels/first-reel`
 
