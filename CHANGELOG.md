@@ -1,9 +1,11 @@
 # Changelog
 
-This repository is versioned together with the `lana-mcp-render` service: the version here is
-the minimum service version it needs. Dates are the release date of the tag.
+This repository is versioned together with the `lana-mcp-render` service: major and minor
+match the minimum service version it needs; a patch release changes only the client. Dates are the release date of the tag.
 
-## Unreleased
+## 1.5.1 — simpler install
+
+Client-only change: still requires `lana-mcp-render >= 1.5.0`.
 
 ### Simpler install
 
