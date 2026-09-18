@@ -55,4 +55,4 @@ def test_missing_ffprobe_exits_2(tmp_path, monkeypatch):
     empty_bin.mkdir()
     result = run_probe(tmp_path, [str(src)], env={"PATH": str(empty_bin)})
     assert result.returncode == 2
-    assert "run setup.py" in result.stderr
+    assert "install ffmpeg" in result.stderr

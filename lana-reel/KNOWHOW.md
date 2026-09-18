@@ -215,8 +215,8 @@ The expensive ones. None of these raises an error.
 
 Cloud-sync folders (iCloud Drive, OneDrive, Dropbox) list a file with its real size but read it
 back as 0 bytes, which surfaces as `spawn ENOEXEC`, a module that "cannot set properties of
-undefined", or an empty media file. **Keep `~/.reel/node_modules` outside any synced folder** —
-`setup.py` puts it in `~/.reel` for that reason. Check with
+undefined", or an empty media file. **Keep `~/.reel/template/node_modules` outside any synced folder** —
+`new_project.py` installs it in `~/.reel` for that reason. Check with
 `dd if=<file> of=/dev/null bs=1m count=1`: 0 bytes transferred means evicted.
 
 ---

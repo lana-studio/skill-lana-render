@@ -17,7 +17,7 @@ from unittest import mock
 
 import pytest
 
-SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
+SCRIPTS = Path(__file__).resolve().parents[1] / "lana-reel" / "scripts"
 
 # Built from split pieces so this file, like transfer.py itself, never
 # contains the literal contiguous substrings tools/check_clean.py's

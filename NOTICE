@@ -4,10 +4,10 @@ Copyright 2026 Lana Studio
 This product is licensed under the Apache License, Version 2.0. See LICENSE.
 
 This product includes the following third-party assets, each under its own
-license (full texts alongside the files: assets/fonts/OFL.txt,
-assets/sfx/LICENSE):
+license (full texts alongside the files: lana-reel/assets/fonts/OFL.txt,
+lana-reel/assets/sfx/LICENSE):
 
-Fonts — SIL Open Font License 1.1 (assets/fonts/):
+Fonts — SIL Open Font License 1.1 (lana-reel/assets/fonts/):
   - Inter            — Copyright (c) 2016 The Inter Project Authors
                         (https://github.com/rsms/inter)
   - Open Sans        — Copyright 2020 The Open Sans Project Authors
@@ -19,8 +19,8 @@ Fonts — SIL Open Font License 1.1 (assets/fonts/):
   - Playfair Display — Copyright 2005-2023 The Playfair Project Authors
                         (https://github.com/clauseggers/Playfair)
 
-  See assets/fonts/MANIFEST.json for the file-to-family mapping and source URLs.
+  See lana-reel/assets/fonts/MANIFEST.json for the file-to-family mapping and source URLs.
 
-Sound effects — CC0 1.0 Universal, public domain dedication (assets/sfx/):
+Sound effects — CC0 1.0 Universal, public domain dedication (lana-reel/assets/sfx/):
   - glitch.wav — made by Lana Studio
   - plop.wav   — made by Lana Studio

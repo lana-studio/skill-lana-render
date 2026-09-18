@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: How the skills work
     url: https://github.com/lana-studio/skill-lana-render#readme
-    about: Requirements, install, the hello render and what runs where.
+    about: What it is, what runs where, and how to install it.
   - name: Errors, limits and quotas
-    url: https://github.com/lana-studio/skill-lana-render/blob/main/skills/lana-mcp-render/references/errors-limits-quotas.md
+    url: https://github.com/lana-studio/skill-lana-render/blob/main/lana-reel/references/errors-limits-quotas.md
     about: Every error code, whether it is retryable, and what to do about it. Check here first.

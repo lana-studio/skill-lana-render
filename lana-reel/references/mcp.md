@@ -1,15 +1,3 @@
----
-name: lana-mcp-render
-description: >
-  Operates the Lana Studio MCP to produce video in the cloud: connect and authorize the `lana`
-  server, upload takes, clips, images, fonts and code bundles, transcribe, measure silence,
-  segment a person, read the SFX pack and the shared library, submit a Remotion render on
-  Lana's GPU, wait for the job and download the result — within the real contract, quotas and
-  error codes. Use it when someone asks to "render on Lana", "upload to Lana", "transcribe with
-  Lana", "measure silences with Lana", asks about any `lana_*` tool, or says "renderizar en
-  Lana", "subir a Lana", "conectar el MCP de Lana".
----
-
 # Lana MCP — how an agent operates it
 
 Thirteen tools, all named `lana_*`: `get_capabilities`, `create_upload`, `confirm_upload`,
@@ -30,8 +18,7 @@ If you edit this file you may rewrite the sentence; do not weaken the rule.
    `analysis:create`, `analysis:read`, `render:create`, `render:read`, `jobs:read`. If a call
    answers `FORBIDDEN_SCOPE`, the message names the scope that is missing: re-authorize in
    `/mcp` and grant it.
-5. `python3 install.py` then `python3 setup.py` from the repository.
-6. **Run the hello render** (`examples/hello-render/`). One job, about two minutes, and it
+5. **Run the hello render** (`examples/hello-render.md`). One job, about two minutes, and it
    verifies OAuth, scopes, quota, the harness version and that you can download a result.
 
 **Never call `lana_get_capabilities()` with no topic** — the full answer is around 72 KB of

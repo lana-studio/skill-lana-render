@@ -13,7 +13,7 @@ It does not need a project: run it from anywhere.
 ### 1. Emit the arguments
 
 ```bash
-python3 ~/.claude/skills/lana-mcp-render/scripts/lana/make_probe.py --emit
+python3 ~/.claude/skills/lana-reel/scripts/lana/make_probe.py --emit
 ```
 
 It prints — and writes to `hello-render.args.json` — the exact arguments for the render:
@@ -56,7 +56,7 @@ Expected: `status: "SUCCEEDED"` with `render.outputs[0]` carrying `composition_i
 ### 4. Download the result
 
 ```bash
-python3 ~/.claude/skills/lana-mcp-render/scripts/lana/transfer.py get "<read_url>" -o out/hello.mp4
+python3 ~/.claude/skills/lana-reel/scripts/lana/transfer.py get "<read_url>" -o out/hello.mp4
 ```
 
 `read_url` lives one hour and is re-signed every time you read the job; if it expires, read the
@@ -65,7 +65,7 @@ job again rather than editing the URL.
 ### 5. Check it
 
 ```bash
-python3 ~/.claude/skills/lana-mcp-render/scripts/lana/verify_output.py --job lana/jobs/<job_id>.json
+python3 ~/.claude/skills/lana-reel/scripts/lana/verify_output.py --job lana/jobs/<job_id>.json
 ```
 
 It prints `ok` — or, when the job failed, translates the known cases (see below).

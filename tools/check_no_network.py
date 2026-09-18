@@ -14,7 +14,7 @@ AST-parses every *.py file (plus a light text scan for *.sh and template/**/*.ts
   - fails if subprocess/os.system/os.popen invoke security/curl/wget/nc/ssh/scp/
     rsync/ftp/openssl;
   - fails if ffmpeg/ffprobe are invoked from a file other than probe_source.py,
-    prep_upload.py, verify_output.py or setup.py;
+    prep_upload.py or verify_output.py;
   - fails if a literal ffmpeg argument looks like a network URL/protocol
     (http://, https://, rtmp://, tcp://, -protocol_whitelist) — ffmpeg is never a
     network client here;
@@ -45,6 +45,7 @@ from _shared import (  # noqa: E402
     is_allowed,
     list_files,
     read_text,
+    skill_rel,
 )
 
 TRANSFER_SCRIPT = "scripts/lana/transfer.py"
@@ -72,7 +73,6 @@ FFMPEG_ALLOWED_FILES = {
     "scripts/reel/probe_source.py",
     "scripts/lana/prep_upload.py",
     "scripts/lana/verify_output.py",
-    "setup.py",
 }
 SUBPROCESS_CALL_TARGETS = {
     "subprocess.run", "subprocess.call", "subprocess.check_call",
@@ -197,7 +197,7 @@ def check_python_file(rel_posix: str, source: str) -> list[Finding]:
     except SyntaxError as exc:
         return [Finding(rel_posix, exc.lineno or 1, "syntax-error", str(exc))]
 
-    is_transfer = rel_posix == TRANSFER_SCRIPT
+    is_transfer = skill_rel(rel_posix) == TRANSFER_SCRIPT
     aliases = _collect_import_aliases(tree)
 
     for node in ast.walk(tree):
@@ -240,7 +240,7 @@ def check_python_file(rel_posix: str, source: str) -> list[Finding]:
                             rel_posix, lineno, "blocked-subprocess", f"{target}(...{basename}...)",
                         ))
                     elif basename in FFMPEG_TOKENS:
-                        if rel_posix not in FFMPEG_ALLOWED_FILES:
+                        if skill_rel(rel_posix) not in FFMPEG_ALLOWED_FILES:
                             findings.append(Finding(
                                 rel_posix, lineno, "ffmpeg-not-allowlisted",
                                 f"{basename} invoked outside the 4 allowed scripts",
@@ -313,7 +313,7 @@ def collect_findings(root: Path, allow_prefixes: list[str] | None = None) -> lis
             source = read_text(root / rel)
             if source is not None:
                 findings.extend(check_shell_file(rel_posix, source))
-        elif suffix in {".ts", ".tsx"} and rel_posix.startswith("template/"):
+        elif suffix in {".ts", ".tsx"} and skill_rel(rel_posix).startswith("template/"):
             source = read_text(root / rel)
             if source is not None:
                 findings.extend(check_template_ts_file(rel_posix, source))

@@ -162,11 +162,11 @@ def test_font_pair_ids_and_groups_match_template_fonts_tsx():
     design. Hallazgo 17 (2026-09-17): this used to `pytest.skip()` inline
     when Fonts.tsx hadn't landed yet — a THIRD, file-name/marker-invisible
     skip mechanism, asleep since the template merged but exactly the same
-    species as make_pkg.py's old silent "typecheck skipped: run setup.py".
+    species as make_pkg.py's old silent "typecheck skipped".
     `Fonts.tsx` is part of the integrated tree now: a missing file is a
     real regression, not a "some other role's work isn't in yet" — fail,
     don't sleep."""
-    fonts_tsx = REPO_ROOT / "template" / "src" / "Fonts.tsx"
+    fonts_tsx = REPO_ROOT / "lana-reel" / "template" / "src" / "Fonts.tsx"
     assert fonts_tsx.is_file(), "template/src/Fonts.tsx missing"
 
     import sys

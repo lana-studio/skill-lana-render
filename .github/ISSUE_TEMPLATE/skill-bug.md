@@ -14,12 +14,10 @@ labels: bug
 ## Versions
 
 ```
-# from ~/.claude/skills/reel/INSTALLED.json
+# from: cat ~/.claude/skills/lana-reel/VERSION
 version:
-commit:
-mode:
 
-# from: python3 ~/.claude/skills/reel/scripts/lana/caps.py limits
+# from: python3 ~/.claude/skills/lana-reel/scripts/lana/caps.py limits
 service_version:
 render_enabled:
 ```
@@ -37,7 +35,7 @@ render_enabled:
 # they are the finding, and the first one is usually the cause of the rest.
 #
 # Two that are not bugs and do not need an issue:
-#   !! ffmpeg/ffprobe not found on PATH — run setup.py -> setup.py was never run, or ffmpeg is not installed
+#   !! ffmpeg/ffprobe not found on PATH — install ffmpeg -> ffmpeg is not installed
 #   !! URL expired or invalid: ask the tool again      -> a signed URL aged out; read the job again
 ```
 

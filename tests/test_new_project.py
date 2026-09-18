@@ -31,7 +31,7 @@ FAKE_SIGNED_URL = (
 
 
 def run_new_project(args, cwd=None):
-    return run(SCRIPTS / "reel" / "new_project.py", args, cwd=cwd)
+    return run(SCRIPTS / "reel" / "new_project.py", [*args, "--no-install"], cwd=cwd)
 
 
 def _init_repo(path: Path) -> None:

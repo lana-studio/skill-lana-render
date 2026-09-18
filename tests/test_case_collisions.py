@@ -61,7 +61,7 @@ from conftest import FIXTURES, REPO_ROOT, SCRIPTS, run
 # whole amendment exists to close everywhere else. Nothing to register in
 # tests/deferred_skips.py because nothing here ever skips.
 
-TEMPLATE_SRC = REPO_ROOT / "template" / "src"
+TEMPLATE_SRC = REPO_ROOT / "lana-reel" / "template" / "src"
 
 
 def stem_collisions(names: list[str]) -> dict[str, list[str]]:

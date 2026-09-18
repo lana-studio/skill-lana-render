@@ -1,16 +1,7 @@
 """Tests for the repo's own .gitignore — specifically the entries this role
 owns and keeps accurate as new local-leak vectors turn up.
 
-QA P2: `install.py --link` makes `~/.claude/skills/<name>` a symlink back to
-`<repo>/skills/<name>`, then writes `INSTALLED.json` inside it — which,
-through the symlink, lands at `skills/<name>/INSTALLED.json` in the repo
-itself, carrying an absolute local path (`repo`, `commit`, `installed_at`,
-`mode`). A contributor who tries --link locally and later runs `git add -A`
-would publish that path. QA also found that tests/test_install.py can't
-structurally catch this: its fixture skill directory is torn down with
-shutil.rmtree in teardown before anything checks `git status`.
-
-Second round: QA ran the real proof render and found `lana/jobs/<id>.json`
+QA ran the real proof render and found `lana/jobs/<id>.json`
 holding a live, unredacted Azure signed URL — save_result.py's redaction
 doesn't cover the real shape of a RENDER job result (bug routed to
 python-scripts). `lana/` (transcript, silence, caps snapshots, job results,
@@ -21,7 +12,7 @@ redaction fails anyway. Same reasoning extends to `lana-pkg/`: every file
 under it is generated from `src/` + `project.json` + `videoconfig.py`, so the
 whole directory is now ignored, not just `bundle.zip`.
 
-These tests don't touch install.py, save_result.py, or any other script (all
+These tests don't touch save_result.py or any other script (all
 owned by other roles) — they only prove the .gitignore *patterns* actually
 ignore the paths those scripts write to, using a real throwaway git repo so
 `git status`/`git check-ignore` give ground truth instead of re-implementing
@@ -54,63 +45,15 @@ def _is_ignored(repo: Path, rel_path: str) -> bool:
     return result.returncode == 0
 
 
-@pytest.mark.parametrize("skill", ["reel", "lana-mcp-render"])
-def test_installed_json_is_gitignored_under_link_mode(tmp_path, skill):
+def test_skill_scripts_under_lana_are_not_swallowed_by_the_lana_pattern(tmp_path):
+    # `lana/` ignores any directory named lana — including the skill's own
+    # lana-reel/scripts/lana/. The negation must follow the skill folder, or a
+    # new script there would silently never be committed.
     repo = _init_repo_with_gitignore(tmp_path)
-    target = repo / "skills" / skill / "INSTALLED.json"
+    target = repo / "lana-reel" / "scripts" / "lana" / "new_script.py"
     target.parent.mkdir(parents=True)
-    target.write_text('{"repo": "/Users/whoever/projects/reel-skill"}\n', encoding="utf-8")
-
-    assert _is_ignored(repo, f"skills/{skill}/INSTALLED.json")
-
-    status = subprocess.run(
-        # --untracked-files=all so git reports the ignored *file*, not just
-        # "skills/" collapsed as a directory (its default behavior when the
-        # whole directory content is untracked).
-        ["git", "status", "--porcelain", "--ignored=matching", "--untracked-files=all"],
-        cwd=repo, capture_output=True, text=True, check=True,
-    ).stdout
-    # `git status --ignored` marks ignored paths with a leading "!!".
-    assert any(
-        line.startswith("!!") and f"skills/{skill}/INSTALLED.json" in line
-        for line in status.splitlines()
-    ), status
-
-
-def test_installed_json_survives_git_add_dash_a(tmp_path):
-    # The exact failure mode QA described: someone tries --link locally, then
-    # runs `git add -A`. Prove the file never enters the index while an
-    # ordinary skill file right next to it does (sanity check that `-A` ran
-    # for real and isn't just failing silently on an empty tree).
-    repo = _init_repo_with_gitignore(tmp_path)
-    skill_dir = repo / "skills" / "reel"
-    skill_dir.mkdir(parents=True)
-    (skill_dir / "INSTALLED.json").write_text(
-        '{"repo": "/Users/whoever/projects/reel-skill"}\n', encoding="utf-8",
-    )
-    (skill_dir / "SKILL.md").write_text("# reel\n", encoding="utf-8")
-
-    subprocess.run(["git", "add", "-A"], cwd=repo, check=True)
-    staged = subprocess.run(
-        ["git", "diff", "--cached", "--name-only"], cwd=repo,
-        capture_output=True, text=True, check=True,
-    ).stdout.splitlines()
-
-    assert "skills/reel/INSTALLED.json" not in staged
-    assert "skills/reel/SKILL.md" in staged
-
-
-def test_installed_json_is_not_swallowed_by_an_overbroad_pattern(tmp_path):
-    # Guard against the fix regressing into "skills/*" (which would also
-    # gitignore SKILL.md, KNOWHOW.md, references/ — everything the skill
-    # roles actually commit). The pattern must be scoped to INSTALLED.json
-    # only.
-    repo = _init_repo_with_gitignore(tmp_path)
-    skill_dir = repo / "skills" / "reel"
-    skill_dir.mkdir(parents=True)
-    (skill_dir / "SKILL.md").write_text("# reel\n", encoding="utf-8")
-
-    assert not _is_ignored(repo, "skills/reel/SKILL.md")
+    target.write_text("x", encoding="utf-8")
+    assert not _is_ignored(repo, "lana-reel/scripts/lana/new_script.py")
 
 
 # ---------------------------------------------------------------------------

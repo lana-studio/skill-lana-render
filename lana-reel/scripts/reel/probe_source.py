@@ -49,7 +49,7 @@ def require_tools() -> tuple[str, str]:
     ffprobe = shutil.which("ffprobe")
     ffmpeg = shutil.which("ffmpeg")
     if not ffprobe or not ffmpeg:
-        _io.fail("ffmpeg/ffprobe not found on PATH — run setup.py", code=2)
+        _io.fail("ffmpeg/ffprobe not found on PATH — install ffmpeg (macOS: brew install ffmpeg)", code=2)
     return ffmpeg, ffprobe  # type: ignore[return-value]
 
 

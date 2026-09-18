@@ -40,7 +40,7 @@ from pathlib import Path
 from typing import Callable
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-TEMPLATE_DIR = REPO_ROOT / "template"
+TEMPLATE_DIR = REPO_ROOT / "lana-reel" / "template"
 
 
 def _run(cmd: list[str], cwd: Path) -> int:

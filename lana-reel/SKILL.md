@@ -1,21 +1,31 @@
 ---
-name: reel
+name: lana-reel
 description: >
   Builds vertical 1080x1920 talking-head reels with Remotion, rendered on Lana's GPU through
   the `lana` MCP: cuts silences from measured audio, aligns captions to the script, adds
   headlines, transitions, cards and sound effects, and measures retention before spending a
-  render. Your machine only needs python3, node and ffmpeg. Use it when someone asks to
+  render. Also operates the `lana` MCP on its own: upload, transcribe, measure silence, render,
+  download. Your machine only needs python3, node and ffmpeg. Use it when someone asks to
   "make a reel", "edit this vertical video", "cut the silences", "add captions", "add
-  graphics to the reel" or "measure retention" on their own camera footage — or, in Spanish,
-  "montar un reel", "quitar los silencios", "ponerle subtítulos", "editar este video vertical".
+  graphics to the reel", "measure retention", "render on Lana", "upload to Lana" or asks about
+  any `lana_*` tool — or, in Spanish, "montar un reel", "hazme un reel", "quitar los
+  silencios", "ponerle subtítulos", "editar este video vertical", "renderizar en Lana",
+  "subir a Lana", "conectar el MCP de Lana".
 ---
 
-# /reel
+# /lana-reel
 
 Runbook for building a vertical reel end to end. The steps run in order and each one is
 verified before moving to the next. The heavy work — ingest, transcription, silence
 measurement, rendering — runs on Lana through the `lana` MCP; your machine writes React,
 looks at frames and packages files.
+
+How to operate the MCP itself — connecting, upload windows, every error code, quotas, the
+hello render — is in `references/mcp.md`. Read it the first time you touch a `lana_*` tool.
+
+The user may paste the brief from `prompt-reel.md` (a Spanish template). A filled-in field is
+the user's answer — to the three questions of Step 1 or, for style, an explicit instruction
+(I13) that goes first in its round. A blank field or a leftover `<<...>>` is still asked.
 
 **Read `KNOWHOW.md` before improvising anything.** This file says *what to do*; that one says
 *what goes wrong*, why no check catches it, and how to verify the fix. Every silent failure
@@ -48,7 +58,7 @@ above, which is an audio effect, not this field.
 ## Requirements
 
 - **Claude Code** with the `lana` MCP authorized. Not connected yet, or a tool answers
-  `FORBIDDEN_SCOPE`: see the `lana-mcp-render` skill, section 0.
+  `FORBIDDEN_SCOPE`: see `references/mcp.md`, section 0.
 - **`python3` >= 3.10** — every script in `scripts/` is stdlib only.
 - **`node` >= 20** — `npm run check` (`tsc --noEmit`) before spending a render job.
 - **`ffmpeg` and `ffprobe` (required, not optional).** They are how you *see* the material:
@@ -57,9 +67,15 @@ above, which is an audio effect, not this field.
   verify the finished file. That is all. It is **never** used to transcode the take, to
   measure silence on the take, or to render — those run on Lana (I36).
 
-`python3 setup.py` verifies all three and fails with the install command for your OS if one is
-missing. A script exiting 2 with `!! ffmpeg/ffprobe not found on PATH — run setup.py` (or a
-single-tool variant) is this requirement, not a bug in the take.
+There is no setup script. The user installs Remotion's skills with one line in Claude Code
+(`npx skills add remotion-dev/skills`), and that is where python3, node and ffmpeg get
+checked. If one is still missing, a script exits 2 with `!! ffmpeg/ffprobe not found on PATH —
+install ffmpeg` (or a single-tool variant): that is this requirement, not a bug in the take —
+give the user the install command for their OS and continue.
+
+The Remotion template's `node_modules` install themselves: the first `new_project.py` on a
+machine runs `npm ci` once in `~/.reel/template/` (about a minute) and every project symlinks
+it. Nothing to do by hand.
 
 ## The rule that governs everything
 
@@ -77,7 +93,7 @@ closes at the start of the next page or at `last word + 150 ms`, whichever comes
 fixed 1100 ms cap once killed pages mid-word for five releases and nobody measured it.
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/reel/check_captions.py   # mandatory before EVERY render
+python3 ~/.claude/skills/lana-reel/scripts/reel/check_captions.py   # mandatory before EVERY render
 ```
 
 **If it prints `!!`, there is no render** (I4). If you change pagination (another
@@ -86,7 +102,7 @@ python3 ~/.claude/skills/reel/scripts/reel/check_captions.py   # mandatory befor
 ## Step 0 — New project
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/reel/new_project.py ~/reels/my-first --name my-first --source ~/Movies/take.MOV
+python3 ~/.claude/skills/lana-reel/scripts/reel/new_project.py ~/reels/my-first --name my-first --source ~/Movies/take.MOV
 export REEL_PROJECT=~/reels/my-first
 ```
 
@@ -100,7 +116,7 @@ Then check what the service offers before spending anything:
 ## Step 1 — Look at the take, decide with the user, upload it as it is
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/reel/probe_source.py raw/take.MOV --record
+python3 ~/.claude/skills/lana-reel/scripts/reel/probe_source.py raw/take.MOV --record
 ```
 
 It prints duration, resolution, fps, rotation, color transfer and whether there is an audio
@@ -130,14 +146,14 @@ silence is measured on Lana (I36).
 **A reel take is `take`** (1 s–10 min), not `episode`, which demands **60 s minimum** and rejects
 a short clip *permanently* — a `REJECTED` asset cannot be re-confirmed. `prep_upload.py` catches
 it locally first: `!! 34.4s with --purpose episode is below the 60s floor; use --purpose take
-instead (1-600s)`. Windows per purpose: `lana-mcp-render/SKILL.md` §1.
+instead (1-600s)`. Windows per purpose: `references/mcp.md` §1.
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/lana/prep_upload.py raw/take.MOV --purpose take --key clip --emit
+python3 ~/.claude/skills/lana-reel/scripts/lana/prep_upload.py raw/take.MOV --purpose take --key clip --emit
 #   → lana_create_upload(**args)
-python3 ~/.claude/skills/reel/scripts/lana/transfer.py put raw/take.MOV --url <upload_url> --header <k=v> --key clip
+python3 ~/.claude/skills/lana-reel/scripts/lana/transfer.py put raw/take.MOV --url <upload_url> --header <k=v> --key clip
 #   → lana_confirm_upload(asset_id=...)
-python3 ~/.claude/skills/reel/scripts/lana/register_asset.py clip --asset-id <uuid> --ingest-job <uuid>
+python3 ~/.claude/skills/lana-reel/scripts/lana/register_asset.py clip --asset-id <uuid> --ingest-job <uuid>
 #   → lana_wait_job(job_id=<ingest_job_id>, timeout_s=180)   # repeat while timed_out
 ```
 
@@ -160,9 +176,9 @@ lana_wait_job(...) ×2
 ```
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/lana/save_result.py transcript <path to the tool result>
-python3 ~/.claude/skills/reel/scripts/lana/save_result.py silence <path to the tool result>
-python3 ~/.claude/skills/reel/scripts/reel/takes.py --table
+python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py transcript <path to the tool result>
+python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py silence <path to the tool result>
+python3 ~/.claude/skills/lana-reel/scripts/reel/takes.py --table
 ```
 
 Each speech region is one take; the table gives start and end in milliseconds, which is
@@ -198,8 +214,8 @@ textures, B-roll and audio, none of which you upload.
 lana_get_capabilities(topic="library")
 ```
 ```bash
-python3 ~/.claude/skills/reel/scripts/lana/save_result.py caps-library <path to the tool result>
-python3 ~/.claude/skills/reel/scripts/lana/caps.py library
+python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py caps-library <path to the tool result>
+python3 ~/.claude/skills/lana-reel/scripts/lana/caps.py library
 ```
 
 `caps.py library` prints **every** entry with its `license` field exactly as it comes,
@@ -226,9 +242,9 @@ Before writing `videoconfig.py`, the user chooses the style of EACH element. **N
 "like last time": every element is shown and confirmed on every video** (I8).
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/reel/styles.py questions            # rounds ready for AskUserQuestion
-python3 ~/.claude/skills/reel/scripts/reel/styles.py remember answers.json
-python3 ~/.claude/skills/reel/scripts/lana/brand.py --emit answers.json   # → lana_set_brand_defaults(**args)
+python3 ~/.claude/skills/lana-reel/scripts/reel/styles.py questions            # rounds ready for AskUserQuestion
+python3 ~/.claude/skills/lana-reel/scripts/reel/styles.py remember answers.json
+python3 ~/.claude/skills/lana-reel/scripts/lana/brand.py --emit answers.json   # → lana_set_brand_defaults(**args)
 ```
 
 Four rounds, up to four questions each, passed as they are to `AskUserQuestion`: text · image ·
@@ -265,7 +281,7 @@ Write `videoconfig.py` (one `CONFIG` dict: SEL, titles, punch, bw, transitions, 
 inserts, gfx, style), then:
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/reel/build.py
+python3 ~/.claude/skills/lana-reel/scripts/reel/build.py
 ```
 
 **When it finishes it prints which line each effect ended up anchored to. Read that map, every
@@ -278,9 +294,9 @@ number of cuts, any gap over 8 s, `hook_end_ms`, and the key moments it picked f
 ## Step 6 — Before rendering
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/reel/check_retention.py
-python3 ~/.claude/skills/reel/scripts/reel/check_captions.py
-python3 ~/.claude/skills/reel/scripts/reel/check_repeats.py
+python3 ~/.claude/skills/lana-reel/scripts/reel/check_retention.py
+python3 ~/.claude/skills/lana-reel/scripts/reel/check_captions.py
+python3 ~/.claude/skills/lana-reel/scripts/reel/check_repeats.py
 ```
 
 Target: **no gap over 8 s without a visual event, hook before 4 s. Close the gaps by ADDING
@@ -315,14 +331,14 @@ and asks for confirmation past 10 min. Same handshake as step 1; register each o
 ## Step 8 — Package and proof render
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/lana/make_pkg.py
+python3 ~/.claude/skills/lana-reel/scripts/lana/make_pkg.py
 cd "$REEL_PROJECT" && npm run check          # tsc, seconds; a failed job costs minutes
-python3 ~/.claude/skills/reel/scripts/lana/make_bundle.py
-python3 ~/.claude/skills/reel/scripts/lana/prep_upload.py lana-pkg/bundle.zip --purpose bundle --emit
+python3 ~/.claude/skills/lana-reel/scripts/lana/make_bundle.py
+python3 ~/.claude/skills/lana-reel/scripts/lana/prep_upload.py lana-pkg/bundle.zip --purpose bundle --emit
 #   → lana_create_upload → transfer.py put → lana_confirm_upload → register_asset.py bundle
-python3 ~/.claude/skills/reel/scripts/lana/make_submit.py --proof --emit
+python3 ~/.claude/skills/lana-reel/scripts/lana/make_submit.py --proof --emit
 #   → lana_submit_render(**args) → lana_wait_job(...) → transfer.py get <read_url> -o out/proof-1.mp4
-python3 ~/.claude/skills/reel/scripts/reel/probe_source.py out/proof-1.mp4 --frames 1
+python3 ~/.claude/skills/lana-reel/scripts/reel/probe_source.py out/proof-1.mp4 --frames 1
 ```
 
 **Validate the key moments before the final render** (I25). The proof is ONE job with up to
@@ -337,10 +353,10 @@ jobs and a full reel spends 6 to 12 (I32).
 ## Step 9 — Final render and verification
 
 ```bash
-python3 ~/.claude/skills/reel/scripts/lana/make_submit.py --final --emit
+python3 ~/.claude/skills/lana-reel/scripts/lana/make_submit.py --final --emit
 #   → lana_submit_render(**args) → lana_wait_job(...) → save_result.py job <path>
-python3 ~/.claude/skills/reel/scripts/lana/transfer.py get <read_url> -o out/final.mp4
-python3 ~/.claude/skills/reel/scripts/lana/verify_output.py --job lana/jobs/<job_id>.json --file out/final.mp4
+python3 ~/.claude/skills/lana-reel/scripts/lana/transfer.py get <read_url> -o out/final.mp4
+python3 ~/.claude/skills/lana-reel/scripts/lana/verify_output.py --job lana/jobs/<job_id>.json --file out/final.mp4
 ```
 
 `save_result.py job` prints the download line for the file it recorded —

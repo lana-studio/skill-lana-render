@@ -193,20 +193,20 @@ def main(argv: list[str]) -> int:
     if ext in VIDEO_AUDIO_EXTS and args.purpose in ("episode", "take", "context"):
         ffprobe = shutil.which("ffprobe")
         if not ffprobe:
-            _io.fail("ffprobe not found on PATH — run setup.py", code=2)
+            _io.fail("ffprobe not found on PATH — install ffmpeg (macOS: brew install ffmpeg)", code=2)
         check_duration(args.purpose, probe_duration_s(ffprobe, path))
 
     if ext in AUDIO_FIXABLE_EXTS and args.purpose in ("episode", "take", "context"):
         if ffprobe is None:
             ffprobe = shutil.which("ffprobe")
             if not ffprobe:
-                _io.fail("ffprobe not found on PATH — run setup.py", code=2)
+                _io.fail("ffprobe not found on PATH — install ffmpeg (macOS: brew install ffmpeg)", code=2)
         if not has_audio_stream(ffprobe, path):
             if args.no_fix:
                 _io.fail(f"{path} has no audio track (Lana ingest requires audio); rerun without --no-fix", code=1)
             ffmpeg = shutil.which("ffmpeg")
             if not ffmpeg:
-                _io.fail("ffmpeg not found on PATH — run setup.py", code=2)
+                _io.fail("ffmpeg not found on PATH — install ffmpeg (macOS: brew install ffmpeg)", code=2)
             new_path = add_silent_track(ffmpeg, path)
             _io.eprint(f"{path}: no audio track — silent track added as {new_path.name} (Lana ingest requires audio)")
             path = new_path

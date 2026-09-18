@@ -5,11 +5,8 @@ __pycache__/
 out/
 raw/
 lana/
-!scripts/lana/
+!lana-reel/scripts/lana/
 lana-pkg/
-skills/*/scripts
-skills/*/template
-skills/*/assets
-skills/*/INSTALLED.json
+dist/
 .pytest_cache/
 *.pyc

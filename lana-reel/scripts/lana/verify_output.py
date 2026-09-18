@@ -180,7 +180,7 @@ def main(argv: list[str]) -> int:
         ffprobe = shutil.which("ffprobe")
         ffmpeg = shutil.which("ffmpeg")
         if not ffprobe or not ffmpeg:
-            _io.fail("ffmpeg/ffprobe not found on PATH — run setup.py", code=2)
+            _io.fail("ffmpeg/ffprobe not found on PATH — install ffmpeg (macOS: brew install ffmpeg)", code=2)
 
         probe_cmd = [ffprobe, "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(file)]
         probe_result = subprocess.run(probe_cmd, capture_output=True, text=True)
