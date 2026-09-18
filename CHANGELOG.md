@@ -3,6 +3,37 @@
 This repository is versioned together with the `lana-mcp-render` service: major and minor
 match the minimum service version it needs; a patch release changes only the client. Dates are the release date of the tag.
 
+## Unreleased — install by asking Claude Code
+
+Client-only change: still requires `lana-mcp-render >= 1.5.0`.
+
+- **One install document: `README.md`.** The user pastes one line into Claude Code with the
+  repository URL; the agent clones it and follows the README's numbered steps (platform,
+  prerequisites, source, skill folder, Remotion's skills, MCP registration, restart and login,
+  hello render). The user only approves commands, restarts and logs in.
+  `LEEME-PRIMERO.md`, `INSTALAR.md` and `DETALLES.md` are gone; their details (data, shared
+  library & licenses, quotas, versions) live in the README, which is also where `SKILL.md` and
+  `caps.py` already pointed ("README §Shared library & licenses").
+- **The `lana` MCP server is registered with `--scope user`.** The previous command registered it
+  only for the folder it ran in, so a reel opened in another folder had no `lana` tools.
+- The release zip ships `README.md`, `LICENSE` and `NOTICE` next to the skill.
+
+### Windows (experimental)
+
+Not verified on a real Windows machine yet; these are the blockers found by reading the code.
+
+- **Links without privilege.** Windows refuses symlinks without administrator rights or Developer
+  Mode, so the first project could never be created. `_lib.io.link_dir` / `link_file` keep the
+  symlink on macOS/Linux (a failure there is still an error) and on Windows fall back to a
+  directory junction or a hard link, then a copy. Used by `new_project.py` and `make_pkg.py`.
+- **tsc runs as `node …/typescript/bin/tsc`** instead of `node_modules/.bin/tsc`, which on Windows
+  is a shell script that cannot be executed.
+- **UTF-8 output.** On Windows a script's piped stdout/stderr used cp1252 and died on the first
+  `→`; the `_lib` package now reconfigures them to UTF-8 there. ffprobe/ffmpeg/tsc output is
+  decoded as UTF-8 on every system.
+- **Install:** the README detects Git Bash, installs prerequisites with `winget`, and states that
+  `python3` is `py -3` on Windows.
+
 ## 1.5.1 — simpler install
 
 Client-only change: still requires `lana-mcp-render >= 1.5.0`.

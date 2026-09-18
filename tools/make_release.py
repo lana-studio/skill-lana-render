@@ -6,9 +6,7 @@
 Writes dist/lana-reel-<version>.zip with exactly what a user needs:
 
     lana-reel/          the skill (version from lana-reel/VERSION)
-    LEEME-PRIMERO.md
-    INSTALAR.md
-    DETALLES.md
+    README.md
     LICENSE
     NOTICE
 
@@ -24,7 +22,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SKILL_DIR = "lana-reel"
-DOCS = ("LEEME-PRIMERO.md", "INSTALAR.md", "DETALLES.md", "LICENSE", "NOTICE")
+DOCS = ("README.md", "LICENSE", "NOTICE")
 EXCLUDED_NAMES = {"node_modules", "__pycache__", ".DS_Store"}
 
 

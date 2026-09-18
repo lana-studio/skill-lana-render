@@ -634,7 +634,7 @@ def provision_node_modules(project_dir: Path) -> Path | None:
         return None
     if node_modules.is_symlink():
         node_modules.unlink()
-    node_modules.symlink_to(shared, target_is_directory=True)
+    _io.link_dir(node_modules, shared)
     return node_modules
 
 
@@ -657,13 +657,19 @@ def run_typecheck(project_dir: Path, dest_dir: Path, no_check: bool) -> int:
     if node_modules is None:
         _io.fail("node_modules not found — npm ci could not install the template (the typecheck gate cannot run without it)", code=2)
 
-    tsc_bin = node_modules / ".bin" / "tsc"
-    if not tsc_bin.is_file():
-        _io.fail(f"{tsc_bin} not found — corrupt node_modules, delete ~/.reel/template and run make_pkg.py again", code=2)
+    # tsc's JS entry point run by node, not node_modules/.bin/tsc: on Windows
+    # .bin/tsc is a shell script that cannot be executed (npm writes tsc.cmd
+    # next to it). `node <file>` is the same command on every system.
+    tsc_js = node_modules / "typescript" / "bin" / "tsc"
+    if not tsc_js.is_file():
+        _io.fail(f"{tsc_js} not found — corrupt node_modules, delete ~/.reel/template and run make_pkg.py again", code=2)
+    node = shutil.which("node")
+    if node is None:
+        _io.fail("node not found on PATH — install Node.js >= 20", code=2)
 
     result = subprocess.run(
-        [str(tsc_bin), "-p", str((project_dir / "lana-pkg" / "tsconfig.json").relative_to(project_dir))],
-        cwd=str(project_dir), capture_output=True, text=True,
+        [node, str(tsc_js), "-p", str((project_dir / "lana-pkg" / "tsconfig.json").relative_to(project_dir))],
+        cwd=str(project_dir), capture_output=True, text=True, encoding="utf-8", errors="replace",
     )
     if result.returncode != 0:
         output = (result.stdout + result.stderr).strip()

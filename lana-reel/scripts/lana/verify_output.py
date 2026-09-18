@@ -121,7 +121,7 @@ def run_silencedetect(ffmpeg: str, file: Path) -> list[tuple[float, float]]:
     # (used everywhere else in this family to keep stderr quiet) would
     # silently discard every finding this function exists to parse.
     cmd = [ffmpeg, "-v", "info", "-nostats", "-i", str(file), "-af", "silencedetect=noise=-40dB:d=0.4", "-f", "null", "-"]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     silences = []
     start = None
     for line in result.stderr.splitlines():
@@ -183,7 +183,7 @@ def main(argv: list[str]) -> int:
             _io.fail("ffmpeg/ffprobe not found on PATH — install ffmpeg (macOS: brew install ffmpeg)", code=2)
 
         probe_cmd = [ffprobe, "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(file)]
-        probe_result = subprocess.run(probe_cmd, capture_output=True, text=True)
+        probe_result = subprocess.run(probe_cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
         try:
             file_duration_ms = float(probe_result.stdout.strip()) * 1000
         except ValueError:

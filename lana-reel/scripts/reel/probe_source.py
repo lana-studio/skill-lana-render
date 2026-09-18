@@ -60,7 +60,7 @@ def probe(ffprobe: str, file: Path) -> dict:
         "stream=codec_type,codec_name,width,height,r_frame_rate,color_transfer,side_data_list:format=duration",
         "-of", "json", str(file),
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if result.returncode != 0:
         _io.fail(f"ffprobe failed on {file}: {result.stderr.strip()[:300]}", code=2)
     return json.loads(result.stdout or "{}")
@@ -127,7 +127,7 @@ def extract_frames(ffmpeg: str, file: Path, duration_ms: int | None, percentages
             "-frames:v", "1", "-vf", "scale='min(720,iw)':-2",
             "-q:v", "3", "-y", str(dest),
         ]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
         if result.returncode != 0:
             _io.eprint(f"!! could not extract frame at {pct}%: {result.stderr.strip()[:200]}")
             continue

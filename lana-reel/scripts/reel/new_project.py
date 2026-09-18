@@ -128,7 +128,9 @@ def link_node_modules(dest: Path) -> None:
         return
     shared = node_env.ensure_shared_node_modules()
     if shared is not None:
-        target.symlink_to(shared, target_is_directory=True)
+        how = _io.link_dir(target, shared)
+        if how != "symlink":
+            _io.eprint(f"node_modules: {how} of {shared} (this system does not allow a symlink)")
     else:
         _io.eprint("!! no node_modules yet — `npm run check` won't work until npm ci succeeds")
 
@@ -141,7 +143,9 @@ def place_source(dest: Path, source: str, copy_source: bool) -> str:
     if copy_source:
         shutil.copy(src_path, raw_dest)
     else:
-        raw_dest.symlink_to(src_path.resolve())
+        how = _io.link_file(raw_dest, src_path)
+        if how != "symlink":
+            _io.eprint(f"raw/{src_path.name}: {how} of the source (this system does not allow a symlink)")
     return f"raw/{src_path.name}"
 
 

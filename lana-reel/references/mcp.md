@@ -11,7 +11,9 @@ If you edit this file you may rewrite the sentence; do not weaken the rule.
 ## 0. Before you start
 
 1. A Lana Studio account (the normal sign-up).
-2. `claude mcp add --transport http lana https://mcp.lanastudio.pe/mcp`
+2. `claude mcp add --scope user --transport http lana https://mcp.lanastudio.pe/mcp` — at
+   **user scope**: without `--scope user` the server exists only in the folder where the command
+   ran, and the next reel, opened in another folder, has no `lana` tools.
 3. In Claude Code: `/mcp` → `lana` → **Authenticate**. The initial 401 is normal — it is what
    triggers discovery, dynamic client registration and the PKCE flow in the browser.
 4. Expected scopes: `lana:mcp`, `assets:read`, `assets:write`, `transcription:create`,
