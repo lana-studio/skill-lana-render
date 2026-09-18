@@ -82,7 +82,24 @@ def is_allowed(rel: Path, allow_prefixes: list[str]) -> bool:
 # not the prefix itself, nor any path nested under it. Shared by check_clean.py and
 # check_no_network.py so the two checkers can never drift on which dirs are off
 # limits; see the pack's own --allow contract doc for the full rationale.
-FORBIDDEN_ALLOW_PREFIXES = ("scripts", "template", "skills", "assets", "examples", "tests")
+FORBIDDEN_ALLOW_PREFIXES = ("lana-reel", "scripts", "template", "skills", "assets", "examples", "tests")
+
+# The installable skill folder. Every path rule in both checkers is written
+# relative to it ("scripts/lana/transfer.py", "assets/fonts/"), so a --root at
+# the repo and a --root straight at the skill (or a test tree laid out without
+# it) are checked the same way.
+SKILL_DIR = "lana-reel"
+
+
+def skill_rel(rel_posix: str) -> str:
+    """`lana-reel/scripts/x.py` -> `scripts/x.py`; anything else unchanged."""
+    prefix = SKILL_DIR + "/"
+    return rel_posix[len(prefix):] if rel_posix.startswith(prefix) else rel_posix
+
+
+def skill_root(root: Path) -> Path:
+    """The directory skill-relative paths resolve against under `root`."""
+    return root / SKILL_DIR if (root / SKILL_DIR).is_dir() else root
 
 
 def forbidden_allow_prefix(allow_prefixes: list[str]) -> str | None:

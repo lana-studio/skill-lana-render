@@ -31,6 +31,8 @@ from _shared import (  # noqa: E402
     is_allowed,
     list_files,
     read_text,
+    skill_rel,
+    skill_root,
 )
 
 NULL_UUID = "00000000-0000-4000-8000-000000000000"
@@ -463,7 +465,7 @@ TEXT_RULES = [
 
 
 def _load_font_manifest(root: Path) -> tuple[dict, Finding | None]:
-    manifest_path = root / "assets" / "fonts" / "MANIFEST.json"
+    manifest_path = skill_root(root) / "assets" / "fonts" / "MANIFEST.json"
     if not manifest_path.is_file():
         return {}, None
     try:
@@ -484,7 +486,7 @@ def rule_font_not_allowlisted(root: Path, rel: Path, manifest: dict) -> list[Fin
     rel_posix = rel.as_posix()
     if Path(rel_posix).suffix.lower() not in FONT_EXTS:
         return []
-    if not rel_posix.startswith(FONT_ALLOWED_DIR):
+    if not skill_rel(rel_posix).startswith(FONT_ALLOWED_DIR):
         return [Finding(rel_posix, 1, "font-not-allowlisted", "font file outside assets/fonts/")]
     filename = Path(rel_posix).name
     entry = manifest.get(filename)
@@ -493,7 +495,7 @@ def rule_font_not_allowlisted(root: Path, rel: Path, manifest: dict) -> list[Fin
     if entry.get("license") != "OFL-1.1":
         return [Finding(rel_posix, 1, "font-not-allowlisted", f"license={entry.get('license')!r}, expected OFL-1.1")]
     license_file = entry.get("license_file")
-    if not license_file or not (root / "assets" / "fonts" / license_file).is_file():
+    if not license_file or not (skill_root(root) / "assets" / "fonts" / license_file).is_file():
         return [Finding(rel_posix, 1, "font-not-allowlisted", f"license_file {license_file!r} missing")]
     return []
 
@@ -513,7 +515,7 @@ def rule_logo_or_brand_asset(rel: Path) -> list[Finding]:
 
 def rule_large_binary(root: Path, rel: Path) -> list[Finding]:
     rel_posix = rel.as_posix()
-    if rel_posix.startswith(LARGE_BINARY_EXEMPT_PREFIXES):
+    if skill_rel(rel_posix).startswith(LARGE_BINARY_EXEMPT_PREFIXES):
         return []
     try:
         size = (root / rel).stat().st_size
@@ -528,7 +530,7 @@ def rule_media_without_license(root: Path, rel: Path) -> list[Finding]:
     rel_posix = rel.as_posix()
     if Path(rel_posix).suffix.lower() not in MEDIA_EXTS:
         return []
-    if not rel_posix.startswith(MEDIA_LICENSE_SCOPE_PREFIXES):
+    if not skill_rel(rel_posix).startswith(MEDIA_LICENSE_SCOPE_PREFIXES):
         return []
     directory = (root / rel).parent
     if (directory / "LICENSE").is_file():

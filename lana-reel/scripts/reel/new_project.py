@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
 """scripts/reel/new_project.py — scaffold a new reel project.
 
-    python3 ~/.claude/skills/reel/scripts/reel/new_project.py <dir> --name <slug>
-        [--source <file>] [--copy] [--language en]
+    python3 ~/.claude/skills/lana-reel/scripts/reel/new_project.py <dir> --name <slug>
+        [--source <file>] [--copy] [--language en] [--no-install]
 
 1. Creates <dir>/{raw,assets,lana,lana/jobs,lana-pkg,src,out}.
 2. Copies template/src/* into <dir>/src/ and template/{package.json,
    package-lock.json,tsconfig.json,remotion.config.ts} into <dir>/.
-3. Symlinks the shared node_modules (built once by setup.py) into
-   <dir>/node_modules if it exists; otherwise warns and moves on (the agent
-   can still work — `npm run check` just won't work until setup.py has run).
-   NOTE: setup.py's node_modules lives at ~/.reel/template/node_modules (it
-   copies template/package*.json there and runs `npm ci` once per machine);
-   this script symlinks to that same path so `new_project.py` and `setup.py`
-   agree on one shared location.
+3. Symlinks the shared node_modules at ~/.reel/template/node_modules into
+   <dir>/node_modules, running `npm ci` there first if this is the first
+   project on this machine (`_lib/node_env.py`). If npm is missing or fails
+   it warns and moves on — make_pkg.py retries before the typecheck gate.
 4. Writes a minimal project.json, copies/links
-   --source into raw/ if given, copies examples/first-reel/videoconfig.py as
-   a starting point with an empty script, and a project .gitignore.
+   --source into raw/ if given, a starting videoconfig.py with an empty
+   script, and a project .gitignore.
 5. Prints `export REEL_PROJECT=<dir>`.
 
 Stdlib only.
@@ -32,9 +29,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from _lib import io as _io  # noqa: E402
+from _lib import node_env  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SHARED_NODE_MODULES = Path("~/.reel/template/node_modules").expanduser()
 SLUG_RE = re.compile(r"^[a-z0-9-]{3,40}$")
 PROJECT_DIRS = ("raw", "assets", "lana", "lana/jobs", "lana-pkg", "src", "out")
 
@@ -129,10 +126,11 @@ def link_node_modules(dest: Path) -> None:
     target = dest / "node_modules"
     if target.exists() or target.is_symlink():
         return
-    if SHARED_NODE_MODULES.is_dir():
-        target.symlink_to(SHARED_NODE_MODULES, target_is_directory=True)
+    shared = node_env.ensure_shared_node_modules()
+    if shared is not None:
+        target.symlink_to(shared, target_is_directory=True)
     else:
-        _io.eprint(f"!! {SHARED_NODE_MODULES} not found — run setup.py first (`npm run check` won't work yet)")
+        _io.eprint("!! no node_modules yet — `npm run check` won't work until npm ci succeeds")
 
 
 def place_source(dest: Path, source: str, copy_source: bool) -> str:
@@ -154,6 +152,8 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--source", help="Raw footage file to place in raw/.")
     parser.add_argument("--copy", action="store_true", help="Copy --source instead of symlinking it.")
     parser.add_argument("--language", default="en", help="ISO 639-1 language code (default: en).")
+    parser.add_argument("--no-install", action="store_true",
+                        help="Don't run npm ci for the shared node_modules (tests, offline).")
     args = parser.parse_args(argv)
 
     if not SLUG_RE.match(args.name):
@@ -167,7 +167,8 @@ def main(argv: list[str]) -> int:
         (dest / d).mkdir(parents=True, exist_ok=True)
 
     copy_template(dest)
-    link_node_modules(dest)
+    if not args.no_install:
+        link_node_modules(dest)
 
     source_rel = None
     if args.source:
@@ -176,11 +177,7 @@ def main(argv: list[str]) -> int:
     project = make_project_json(args.name, args.language, source_rel)
     _io.write_json(dest / "project.json", project)
 
-    example_cfg = REPO_ROOT / "examples" / "first-reel" / "videoconfig.py"
-    if example_cfg.is_file():
-        shutil.copy(example_cfg, dest / "videoconfig.py")
-    else:
-        (dest / "videoconfig.py").write_text(DEFAULT_VIDEOCONFIG, encoding="utf-8")
+    (dest / "videoconfig.py").write_text(DEFAULT_VIDEOCONFIG, encoding="utf-8")
 
     # lana/ MUST be ignored: it's where save_result.py writes lana/jobs/<id>.json,
     # and until every signed-URL field is redacted correctly, that file can

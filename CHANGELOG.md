@@ -3,6 +3,23 @@
 This repository is versioned together with the `lana-mcp-render` service: the version here is
 the minimum service version it needs. Dates are the release date of the tag.
 
+## Unreleased
+
+### Simpler install
+
+- **One skill, one folder: `lana-reel/`.** `reel` and `lana-mcp-render` are merged; the MCP
+  runbook now lives in `lana-reel/references/mcp.md` and the hello render in
+  `lana-reel/examples/hello-render.md`. `scripts/`, `template/` and `assets/` live inside the
+  skill, so installing is copying one folder.
+- **`install.py` and `setup.py` are gone.** Dependencies are checked when the user installs
+  Remotion's skills from Claude Code; the template's `node_modules` install themselves once in
+  `~/.reel/template/` the first time `new_project.py` (or `make_pkg.py`) needs them, and again
+  when the pinned `package-lock.json` changes. `~/.reel/setup.json` is no longer read.
+- **User docs in Spanish, next to the skill:** `LEEME-PRIMERO.md`, `INSTALAR.md`,
+  `DETALLES.md`, and a brief template at `lana-reel/prompt-reel.md`.
+- `tools/make_release.py` builds the zip users download.
+- Upgrading from 1.5.0: delete `~/.claude/skills/reel` and `~/.claude/skills/lana-mcp-render`.
+
 ## 1.5.0 — first public release
 
 The first public version of the two skills. Requires `lana-mcp-render >= 1.5.0`.

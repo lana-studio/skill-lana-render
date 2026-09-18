@@ -67,7 +67,7 @@ def require_guard_node_modules(node_modules_dir: Path, what: str) -> None:
             "this must NEVER be set in CI"
         )
     pytest.fail(
-        f"!! bug-8 guard cannot run: {what} missing — run npm ci in template/ (setup.py does it)"
+        f"!! bug-8 guard cannot run: {what} missing — run npm ci in lana-reel/template/"
     )
 
 
@@ -126,7 +126,8 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:  # n
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
-SCRIPTS = REPO_ROOT / "scripts"
+SKILL_ROOT = REPO_ROOT / "lana-reel"
+SCRIPTS = SKILL_ROOT / "scripts"
 
 
 def run(script: Path, args: list[str], cwd: Path | None = None, env: dict | None = None) -> subprocess.CompletedProcess:

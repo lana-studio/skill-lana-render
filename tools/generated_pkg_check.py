@@ -31,7 +31,7 @@ convention — no internals imported):
 3. If template/node_modules exists next to this repo (the `template` CI
    job's own `npm ci` leaves it there), symlink it into the project — so
    make_pkg.py's internal typecheck step actually RUNS instead of printing
-   "typecheck skipped: run setup.py" and exiting 0 regardless. Without
+   "typecheck skipped" and exiting 0 regardless. Without
    this, the script would "pass" without ever compiling anything, which is
    exactly the silent-pass failure mode this script exists to close.
 4. `build.py` — turns the fixture CONFIG into src/plan.json/ritmo.json/
@@ -54,9 +54,9 @@ import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = REPO_ROOT / "scripts"
+SCRIPTS = REPO_ROOT / "lana-reel" / "scripts"
 FIXTURES = REPO_ROOT / "tests" / "fixtures"
-TEMPLATE_NODE_MODULES = REPO_ROOT / "template" / "node_modules"
+TEMPLATE_NODE_MODULES = REPO_ROOT / "lana-reel" / "template" / "node_modules"
 
 
 def run(script: Path, args: list[str], cwd: Path, env: dict | None = None) -> subprocess.CompletedProcess:
@@ -89,7 +89,7 @@ def main() -> int:
     proj = tmp / "proj"
 
     print(f"== new_project.py {proj} --name ci-check", file=sys.stderr)
-    result = run(SCRIPTS / "reel" / "new_project.py", [str(proj), "--name", "ci-check"], cwd=tmp)
+    result = run(SCRIPTS / "reel" / "new_project.py", [str(proj), "--name", "ci-check", "--no-install"], cwd=tmp)
     if result.returncode != 0:
         print("!! new_project.py failed", file=sys.stderr)
         return result.returncode
@@ -112,18 +112,17 @@ def main() -> int:
 
     node_modules = proj / "node_modules"
     if TEMPLATE_NODE_MODULES.is_dir():
-        # new_project.py only symlinks ~/.reel/template/node_modules (built
-        # by setup.py) — a CI runner that only ever did `npm ci` inside
-        # template/ (the `template` job's own step) has no reason to have
-        # that path. Point straight at the one that exists so make_pkg.py's
-        # typecheck step actually runs instead of silently skipping.
+        # new_project.py ran with --no-install (no npm ci into the real
+        # ~/.reel from a check). Point straight at the node_modules
+        # tools/check.py's own step 3 left in the template so make_pkg.py's
+        # typecheck step actually runs instead of installing its own.
         if node_modules.is_symlink() or node_modules.exists():
             if node_modules.is_symlink() or node_modules.is_file():
                 node_modules.unlink()
             else:
                 shutil.rmtree(node_modules)
         node_modules.symlink_to(TEMPLATE_NODE_MODULES)
-        shutil.copy(REPO_ROOT / "template" / "tsconfig.json", proj / "tsconfig.json")
+        shutil.copy(REPO_ROOT / "lana-reel" / "template" / "tsconfig.json", proj / "tsconfig.json")
         print(f"== linked {TEMPLATE_NODE_MODULES} -> {node_modules}", file=sys.stderr)
     else:
         print(

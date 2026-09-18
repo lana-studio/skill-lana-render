@@ -27,7 +27,7 @@ import pytest
 
 from conftest import REPO_ROOT
 
-FONTS_DIR = REPO_ROOT / "assets" / "fonts"
+FONTS_DIR = REPO_ROOT / "lana-reel" / "assets" / "fonts"
 MANIFEST_PATH = FONTS_DIR / "MANIFEST.json"
 OFL_PATH = FONTS_DIR / "OFL.txt"
 

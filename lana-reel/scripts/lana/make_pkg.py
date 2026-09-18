@@ -83,14 +83,15 @@ in `template/src/`):
   --no-check — the bundle may fail on Lana`) — the only way this gate is
   ever skipped, and it says so unmistakably. **The gate never silently
   skips otherwise (hallazgo 17, 2026-09-17):** no `node_modules/` in the
-  project used to print `typecheck skipped: run setup.py` and continue —
+  project used to print `typecheck skipped` and continue —
   this let the pre-submit gate quietly do nothing on a fresh clone (or any
   project not scaffolded by `new_project.py`, e.g. `examples/first-reel/`
   used in place). Now `provision_node_modules` symlinks
-  `<project>/node_modules` from the shared one `setup.py` built (its path
-  read from `~/.reel/setup.json`, never hardcoded) if the project doesn't
-  have its own; if neither exists, exit 2 `!! node_modules not found — run
-  setup.py (the typecheck gate cannot run without it)`. This is the
+  `<project>/node_modules` from the shared one at
+  `~/.reel/template/node_modules` (installing it with `npm ci` if this
+  machine has none yet) when the project doesn't have its own; if that
+  fails, exit 2 `!! node_modules not found — npm ci could not install the
+  template (the typecheck gate cannot run without it)`. This is the
   pre-render gate — it compiles what actually gets sent, not the bare
   placeholder, and it always either runs for real or fails loudly.
 - The literal scan across `lana-pkg/src/**` is validation only, never the
@@ -196,6 +197,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from _lib import io as _io  # noqa: E402
+from _lib import node_env  # noqa: E402
 from _lib import limits as _limits  # noqa: E402
 from _lib import project as _project  # noqa: E402
 
@@ -620,34 +622,19 @@ def code_budget(files: dict[str, str]) -> tuple[list[tuple[str, int]], int]:
 def provision_node_modules(project_dir: Path) -> Path | None:
     """Hallazgo 17 (2026-09-17): the typecheck gate must never silently
     skip. If <project_dir>/node_modules already exists, use it. Otherwise
-    symlink it from the shared node_modules setup.py built — the path is
-    READ from ~/.reel/setup.json's own "node_modules" field (never
-    hardcoded: setup.py's --home can move where it lives, and its
-    setup.json always records where it actually put things; new_project.py
-    predates this and hardcodes ~/.reel/template/node_modules directly,
-    which is more fragile — not changed here, out of scope). Returns the
-    node_modules dir to typecheck against, or None if nothing usable could
-    be found or provisioned (the caller fails exit 2 — there is no
-    "skipped" outcome)."""
+    symlink the shared one from `_lib.node_env`, installing it first if
+    this machine has none yet. Returns the node_modules dir to typecheck
+    against, or None if it could not be installed (the caller fails exit 2
+    — there is no "skipped" outcome)."""
     node_modules = project_dir / "node_modules"
     if node_modules.is_dir():
         return node_modules
-
-    setup_json = Path("~/.reel/setup.json").expanduser()
-    if not setup_json.is_file():
+    shared = node_env.ensure_shared_node_modules()
+    if shared is None:
         return None
-    try:
-        setup_data = _io.read_json(setup_json)
-    except (OSError, ValueError):
-        return None
-    shared = setup_data.get("node_modules")
-    if not shared:
-        return None
-    shared_path = Path(shared).expanduser()
-    if not shared_path.is_dir():
-        return None
-
-    node_modules.symlink_to(shared_path, target_is_directory=True)
+    if node_modules.is_symlink():
+        node_modules.unlink()
+    node_modules.symlink_to(shared, target_is_directory=True)
     return node_modules
 
 
@@ -668,11 +655,11 @@ def run_typecheck(project_dir: Path, dest_dir: Path, no_check: bool) -> int:
 
     node_modules = provision_node_modules(project_dir)
     if node_modules is None:
-        _io.fail("node_modules not found — run setup.py (the typecheck gate cannot run without it)", code=2)
+        _io.fail("node_modules not found — npm ci could not install the template (the typecheck gate cannot run without it)", code=2)
 
     tsc_bin = node_modules / ".bin" / "tsc"
     if not tsc_bin.is_file():
-        _io.fail(f"{tsc_bin} not found — corrupt node_modules, re-run setup.py", code=2)
+        _io.fail(f"{tsc_bin} not found — corrupt node_modules, delete ~/.reel/template and run make_pkg.py again", code=2)
 
     result = subprocess.run(
         [str(tsc_bin), "-p", str((project_dir / "lana-pkg" / "tsconfig.json").relative_to(project_dir))],

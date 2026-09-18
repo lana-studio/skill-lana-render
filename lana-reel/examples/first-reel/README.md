@@ -22,11 +22,9 @@ that shuffle JSON files around. That's the whole "Pentium 4" idea.
 2. `claude mcp add --transport http lana https://mcp.lanastudio.pe/mcp`
 3. In `claude`, run `/mcp`, pick `lana`, and Authenticate (the first 401 is
    normal — it triggers RFC 9728 discovery, then DCR, then PKCE).
-4. From the repo root: `python3 install.py` then `python3 setup.py` (verifies
-   `python3`, `node`, and — **required** — `ffmpeg`/`ffprobe`; installs the
-   Remotion template's `node_modules` once, at `~/.reel/`).
-5. `cd examples/first-reel` (or copy this folder out with `new_project.py`
-   once you're past the walkthrough).
+4. Install the skill (`INSTALAR.md` at the root of the download).
+5. Copy this folder somewhere of your own and work there:
+   `cp -R ~/.claude/skills/lana-reel/examples/first-reel ~/reels/first-reel && cd ~/reels/first-reel`
 
 ## The flow: 12 tool calls
 
@@ -43,14 +41,14 @@ lana_get_capabilities(topic="limits")
 ```
 Confirms `service_version >= 1.5.0` and `render_enabled`. Save it:
 ```
-$ python3 ~/.claude/skills/lana-mcp-render/scripts/lana/save_result.py caps-limits <path-from-tool-result>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py caps-limits <path-from-tool-result>
 saved lana/caps.limits.json
 ```
 
 ### 1. Look at your clip, then upload it
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/reel/probe_source.py raw/your-take.mov --frames 3 --record
+$ python3 ~/.claude/skills/lana-reel/scripts/reel/probe_source.py raw/your-take.mov --frames 3 --record
 duration: 34.1s  1080x1920  30.0 fps
 rotation: 0°  has_audio: True
 lana/frames/your-take-10.jpg
@@ -62,7 +60,7 @@ The agent looks at the three frames with `Read`, asks you to confirm mirror /
 subject side, and the script records the answer into `project.json`.
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/prep_upload.py raw/your-take.mov --purpose take --key clip --emit
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/prep_upload.py raw/your-take.mov --purpose take --key clip --emit
 {
   "filename": "your-take.mov",
   "content_type": "video/quicktime",
@@ -82,7 +80,7 @@ lana_create_upload(**args)              # call 1 — returns upload_url + header
 ```
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/transfer.py put raw/your-take.mov --url <upload_url>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/transfer.py put raw/your-take.mov --url <upload_url>
 put -> https://lana-media-dev.blob.core.windows.net/uploads/wr9k2p... (41823917 bytes)
 upload: 100%
 done: 41823917 bytes in 6.4s (HTTP 201)
@@ -93,7 +91,7 @@ lana_confirm_upload(...)                # call 2 — returns asset_id + ingest_j
 ```
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/register_asset.py clip --asset-id <uuid> --ingest-job <uuid>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/register_asset.py clip --asset-id <uuid> --ingest-job <uuid>
 assets.clip: asset_id=<uuid> status=ready ext=mov
 wait: lana_wait_job("<ingest_job_id>")
 ```
@@ -103,7 +101,7 @@ lana_wait_job(ingest_job_id)             # call 3 — waits for the proxy/wav in
 ```
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/save_result.py job <path>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py job <path>
 status=SUCCEEDED phase=
 ```
 
@@ -113,7 +111,7 @@ status=SUCCEEDED phase=
 lana_transcribe(asset_id, language="en")       # call 4
 ```
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/save_result.py transcript <path>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py transcript <path>
 saved lana/transcript.json  (87 words)
 ```
 
@@ -121,12 +119,12 @@ saved lana/transcript.json  (87 words)
 lana_measure_silence(asset_id, noise_db=-35, min_silence_ms=150)   # call 5
 ```
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/save_result.py silence <path>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py silence <path>
 saved lana/silence.json  (3 speech regions)
 ```
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/reel/takes.py --table
+$ python3 ~/.claude/skills/lana-reel/scripts/reel/takes.py --table
 ASSET         #     START       END     DUR FLAG           TEXT
 --------------------------------------------------------------------------------------------------------------
 clip          0      1180     11940  10.76s                Here is the thing nobody tells you about editing
@@ -143,7 +141,7 @@ Edit `videoconfig.py`'s `sel` list to match what you actually said (`takes.py
 --words <a>-<b>` helps you find exact phrasing), then:
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/reel/build.py --proof-windows 4
+$ python3 ~/.claude/skills/lana-reel/scripts/reel/build.py --proof-windows 4
 first-reel: 8 lines | 8 cuts |   26.0s | 91 words | 0 graphics
     TITLE   'THIRTY SECONDS'                   -> [2] You need a phone, thirty seconds, and somethin
     TITLE   'NOT ON YOUR LAPTOP'               -> [6] Everything heavy runs on a render farm, not on
@@ -160,23 +158,21 @@ This writes `src/plan.json`, `src/ritmo.json`, and `src/graphics.json` — not
 code, never as `lana_submit_render`'s `props` argument.
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/make_pkg.py
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/make_pkg.py
 files: 6, 41.3 KB total, 1 assets in ASSET_FILES
-typecheck skipped: run setup.py
+typecheck: ok (6 files)
 ```
-The typecheck gets skipped here even though you ran `setup.py` in "Before you
-start" — that step installs the shared `node_modules` at `~/.reel/`, but only
-`new_project.py` symlinks it into a project folder, and this walkthrough runs
-in place inside `examples/first-reel`. Harmless: it only disables the local
-TypeScript sanity check, nothing downstream depends on it.
+The first time on a machine, `make_pkg.py` installs the Remotion template's
+`node_modules` once at `~/.reel/template/` (`npm ci`, about a minute) and links
+it into this folder before the typecheck.
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/make_bundle.py
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/make_bundle.py
 lana-pkg/bundle.zip: 37.8 KB compressed, 7 entries, 92.1 KB uncompressed, sha256=aa11bb22...
 ```
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/prep_upload.py lana-pkg/bundle.zip --purpose bundle --emit
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/prep_upload.py lana-pkg/bundle.zip --purpose bundle --emit
 {
   "filename": "bundle.zip",
   "content_type": "application/zip",
@@ -189,19 +185,19 @@ $ python3 ~/.claude/skills/reel/scripts/lana/prep_upload.py lana-pkg/bundle.zip 
 lana_create_upload(**args)               # call 6
 ```
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/transfer.py put lana-pkg/bundle.zip --url <upload_url>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/transfer.py put lana-pkg/bundle.zip --url <upload_url>
 ```
 ```
 lana_confirm_upload(...)                 # call 7
 ```
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/register_asset.py bundle --asset-id <uuid>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/register_asset.py bundle --asset-id <uuid>
 ```
 
 ### 4. Proof job — one render, four ~3s windows
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/make_submit.py --proof --emit
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/make_submit.py --proof --emit
 {
   "entry": "src/index.tsx",
   "bundle": "<asset_id>",
@@ -222,7 +218,7 @@ lana_submit_render(**args)               # call 8
 lana_wait_job(job_id)                    # call 9
 ```
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/save_result.py job <path>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py job <path>
 status=SUCCEEDED phase=
   output: Reel-proof-1  3.0s  245312 bytes
   output: Reel-proof-2  3.0s  198765 bytes
@@ -234,8 +230,8 @@ The filename comes from the first composition's id (`Reel-proof-1`,
 lowercased) — not a generic `proof.mp4`.
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/transfer.py get <read_url> -o out/reel-proof-1.mp4
-$ python3 ~/.claude/skills/reel/scripts/reel/probe_source.py out/reel-proof-1.mp4 --frames 1
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/transfer.py get <read_url> -o out/reel-proof-1.mp4
+$ python3 ~/.claude/skills/lana-reel/scripts/reel/probe_source.py out/reel-proof-1.mp4 --frames 1
 duration: 3.0s  1080x1920  30.0 fps
 rotation: 0°  has_audio: True
 lana/frames/reel-proof-1-10.jpg
@@ -246,14 +242,14 @@ or a wrong mirror decision for the cost of one small job, before spending a
 full render.
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/verify_output.py --job lana/jobs/<id>.json --file out/reel-proof-1.mp4
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/verify_output.py --job lana/jobs/<id>.json --file out/reel-proof-1.mp4
 status: SUCCEEDED
 ```
 
 ### 5. The real thing
 
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/make_submit.py --final --emit
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/make_submit.py --final --emit
 {
   "entry": "src/index.tsx",
   "bundle": "<asset_id>",
@@ -271,12 +267,12 @@ lana_submit_render(**args)               # call 10
 lana_wait_job(job_id)                    # call 11
 ```
 ```
-$ python3 ~/.claude/skills/reel/scripts/lana/save_result.py job <path>
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/save_result.py job <path>
 status=SUCCEEDED phase=
   output: Reel  27.3s  4830112 bytes
 download: transfer.py get <read_url from the job result> -o out/reel.mp4
-$ python3 ~/.claude/skills/reel/scripts/lana/transfer.py get <read_url> -o out/reel.mp4
-$ python3 ~/.claude/skills/reel/scripts/lana/verify_output.py --job lana/jobs/<id>.json --file out/reel.mp4
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/transfer.py get <read_url> -o out/reel.mp4
+$ python3 ~/.claude/skills/lana-reel/scripts/lana/verify_output.py --job lana/jobs/<id>.json --file out/reel.mp4
 status: SUCCEEDED
 ```
 

@@ -44,7 +44,7 @@ import sys
 
 from conftest import REPO_ROOT, SCRIPTS, require_guard_node_modules
 
-TEMPLATE_DIR = REPO_ROOT / "template"
+TEMPLATE_DIR = REPO_ROOT / "lana-reel" / "template"
 TEMPLATE_NODE_MODULES = TEMPLATE_DIR / "node_modules"
 
 
@@ -274,10 +274,10 @@ def test_provisions_node_modules_from_reel_home_and_typechecks(tmp_path):
     """Hallazgo 17's actual fix, case "en sitio": a project with no
     node_modules of its own (e.g. a copy of examples/first-reel/ never run
     through new_project.py) still typechecks for real, by symlinking the
-    shared node_modules setup.py built — located via a SIMULATED
-    ~/.reel/setup.json (HOME pointed at a tmp dir), not the real one on
-    this machine, so the test is deterministic regardless of whether this
-    developer has actually run setup.py."""
+    shared node_modules at a SIMULATED ~/.reel/template (HOME pointed at a
+    tmp dir, already up to date so no npm ci runs), not the real one on
+    this machine, so the test is deterministic regardless of what this
+    developer's ~/.reel holds."""
     require_guard_node_modules(TEMPLATE_NODE_MODULES, "template/node_modules")
 
     proj = tmp_path / "proj"
@@ -306,10 +306,11 @@ def test_provisions_node_modules_from_reel_home_and_typechecks(tmp_path):
     # NOT symlinked here on purpose — no project-local node_modules.
 
     fake_home = tmp_path / "fake-home"
-    (fake_home / ".reel").mkdir(parents=True)
-    (fake_home / ".reel" / "setup.json").write_text(
-        json.dumps({"node_modules": str(TEMPLATE_NODE_MODULES)}), encoding="utf-8",
-    )
+    shared = fake_home / ".reel" / "template"
+    shared.mkdir(parents=True)
+    for name in ("package.json", "package-lock.json"):
+        shutil.copy(TEMPLATE_DIR / name, shared / name)
+    (shared / "node_modules").symlink_to(TEMPLATE_NODE_MODULES, target_is_directory=True)
 
     result = subprocess.run(
         [sys.executable, str(SCRIPTS / "lana" / "make_pkg.py")],
@@ -323,26 +324,28 @@ def test_provisions_node_modules_from_reel_home_and_typechecks(tmp_path):
     assert node_modules_link.resolve() == TEMPLATE_NODE_MODULES.resolve()
 
 
-def test_no_node_modules_and_no_reel_home_exits_2(tmp_path):
-    """The hard-failure half of hallazgo 17: no project node_modules AND no
-    ~/.reel/setup.json anywhere to provision from — exit 2 with the
+def test_no_node_modules_and_no_npm_exits_2(tmp_path):
+    """The hard-failure half of hallazgo 17: no project node_modules, no
+    shared one in ~/.reel, and no npm to install it — exit 2 with the
     contract's exact literal, never a silent "skipped". Uses an isolated
-    fake, EMPTY HOME so this is deterministic regardless of whether this
-    machine actually ran setup.py — doesn't need template/node_modules
-    either (there is deliberately nothing to find), so no
-    require_guard_node_modules call."""
+    fake, EMPTY HOME and a PATH without npm so this is deterministic (and
+    never hits the network) regardless of this machine — doesn't need
+    template/node_modules either, so no require_guard_node_modules call."""
     proj = tmp_path / "proj"
     proj.mkdir()
     _seed_minimal_project(proj)
 
     empty_home = tmp_path / "empty-home"
     empty_home.mkdir()
+    empty_bin = tmp_path / "empty-bin"
+    empty_bin.mkdir()
 
     result = subprocess.run(
         [sys.executable, str(SCRIPTS / "lana" / "make_pkg.py")],
         cwd=str(proj), capture_output=True, text=True,
-        env={**os.environ, "REEL_PROJECT": str(proj), "HOME": str(empty_home)},
+        env={**os.environ, "REEL_PROJECT": str(proj), "HOME": str(empty_home), "PATH": str(empty_bin)},
     )
     assert result.returncode == 2
-    assert "!! node_modules not found — run setup.py (the typecheck gate cannot run without it)" in result.stderr
+    assert "!! npm not found on PATH" in result.stderr
+    assert "!! node_modules not found — npm ci could not install the template (the typecheck gate cannot run without it)" in result.stderr
     assert not (proj / "node_modules").exists()

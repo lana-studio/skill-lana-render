@@ -167,7 +167,7 @@ def test_ffprobe_outside_allowed_files_fails(tmp_path):
     "scripts/reel/probe_source.py",
     "scripts/lana/prep_upload.py",
     "scripts/lana/verify_output.py",
-    "setup.py",
+    "lana-reel/scripts/reel/probe_source.py",
 ])
 def test_ffmpeg_in_allowed_files_passes(tmp_path, allowed_file):
     write(tmp_path, allowed_file, (
