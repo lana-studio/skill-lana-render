@@ -102,7 +102,7 @@ def check_purpose(path: Path, purpose: str, content_type: str, size_bytes: int) 
 def probe_duration_s(ffprobe: str, path: Path) -> float | None:
     result = subprocess.run(
         [ffprobe, "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(path)],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
     )
     try:
         return float(result.stdout.strip())
@@ -146,7 +146,7 @@ def check_duration(purpose: str, duration_s: float | None) -> None:
 def has_audio_stream(ffprobe: str, path: Path) -> bool:
     result = subprocess.run(
         [ffprobe, "-v", "error", "-select_streams", "a", "-show_entries", "stream=codec_type", "-of", "csv=p=0", str(path)],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
     )
     return bool(result.stdout.strip())
 
@@ -158,7 +158,7 @@ def add_silent_track(ffmpeg: str, path: Path) -> Path:
         "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-shortest",
         "-c:v", "copy", "-c:a", "aac", "-b:a", "64k", "-movflags", "+faststart", str(dest),
     ]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if result.returncode != 0:
         _io.fail(f"could not add a silent track to {path}: {result.stderr.strip()[:300]}", code=1)
     return dest

@@ -59,7 +59,10 @@ above, which is an audio effect, not this field.
 
 - **Claude Code** with the `lana` MCP authorized. Not connected yet, or a tool answers
   `FORBIDDEN_SCOPE`: see `references/mcp.md`, section 0.
-- **`python3` >= 3.10** — every script in `scripts/` is stdlib only.
+- **`python3` >= 3.10** — every script in `scripts/` is stdlib only. **On Windows (experimental)
+  every `python3` in this runbook is `py -3`**: `python3` there is often a Microsoft Store
+  placeholder. Where Windows refuses a symlink, the scripts use a junction, a hard link or a copy
+  and say so on stderr — that line is expected, not an error.
 - **`node` >= 20** — `npm run check` (`tsc --noEmit`) before spending a render job.
 - **`ffmpeg` and `ffprobe` (required, not optional).** They are how you *see* the material:
   extracting a frame and looking at it is the only way to decide mirroring, subject side and

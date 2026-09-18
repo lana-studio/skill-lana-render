@@ -1,11 +1,13 @@
 """scripts/_lib/io.py — small file/JSON helpers shared by every script.
 
-Stdlib only (json, hashlib, pathlib, sys). No network.
+Stdlib only (json, hashlib, os, pathlib, shutil, sys). No network.
 """
 from __future__ import annotations
 
 import hashlib
 import json
+import os
+import shutil
 import sys
 from pathlib import Path
 from typing import Any
@@ -99,3 +101,53 @@ def fail(message: str, code: int = 1) -> None:
     for line in str(message).splitlines() or [""]:
         eprint(f"!! {line}")
     raise SystemExit(code)
+
+
+# --------------------------------------------------------------------------
+# links: a symlink where the OS allows one, something equivalent where not
+# --------------------------------------------------------------------------
+#
+# Windows only creates symlinks with administrator rights or Developer Mode;
+# without them symlink_to() raises OSError and the first project could never
+# be created. Every link this skill makes goes through these two helpers:
+# macOS/Linux keep the exact symlink they always had (and a failure there is
+# still an error), Windows falls back to what needs no privilege.
+
+def link_dir(link: Path, target: Path, *, platform: str | None = None) -> str:
+    """Make directory `link` point at `target`. Returns "symlink", or on
+    Windows "junction" (a directory junction: no privilege needed, same
+    volume or not) or, as a last resort, "copy"."""
+    platform = platform or sys.platform
+    target = Path(target).resolve()
+    try:
+        Path(link).symlink_to(target, target_is_directory=True)
+        return "symlink"
+    except OSError:
+        if platform != "win32":
+            raise
+    try:
+        import _winapi  # CPython on Windows; what the stdlib's own tests use for junctions
+        _winapi.CreateJunction(str(target), str(link))
+        return "junction"
+    except (ImportError, AttributeError, OSError):
+        shutil.copytree(target, link, symlinks=True)
+        return "copy"
+
+
+def link_file(link: Path, target: Path, *, platform: str | None = None) -> str:
+    """Make file `link` point at `target`. Returns "symlink", or on Windows
+    "hardlink" (no privilege needed, same volume only) or "copy"."""
+    platform = platform or sys.platform
+    target = Path(target).resolve()
+    try:
+        Path(link).symlink_to(target)
+        return "symlink"
+    except OSError:
+        if platform != "win32":
+            raise
+    try:
+        os.link(target, link)
+        return "hardlink"
+    except OSError:
+        shutil.copy2(target, link)
+        return "copy"
