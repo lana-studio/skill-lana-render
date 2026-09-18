@@ -84,7 +84,8 @@ License 1.1 y los dos efectos de sonido de `lana-reel/assets/sfx/` son CC0 1.0.
 
 ## Versiones
 
-Esta skill se versiona **junto con el servicio `lana-mcp-render`**: la versión de
-`lana-reel/VERSION` necesita esa versión del servicio o una más nueva. La skill lo compara sola
+Esta skill se versiona **junto con el servicio `lana-mcp-render`**: el primer y el segundo
+número de `lana-reel/VERSION` indican la versión mínima del servicio que necesita (1.5.1 necesita
+1.5 o más nueva); el tercero cambia solo cuando cambia la skill. La skill lo compara sola
 al empezar cada reel. La plantilla de Remotion está fijada a la versión exacta que usa el
 renderizador (4.0.484).
