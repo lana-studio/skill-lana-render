@@ -1,0 +1,14 @@
+{
+  "_captured": {
+    "tool": "lana_submit_render",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17"
+  },
+  "code": "INVALID_ARGUMENT",
+  "message": "UUID input should be a string, bytes or UUID object",
+  "guidance": "Los argumentos de la llamada no cumplen el contrato del tool: falta un campo obligatorio, un tipo no coincide, un valor excede su límite, o hay un campo que el tool no acepta. `field_path` dice cuál. Corregí ese argumento y volvé a llamar; reintentar igual vuelve a fallar. Los tools no aceptan campos extra: un nombre mal escrito no se ignora, se rechaza.",
+  "field_path": "bundle",
+  "retry_after_s": null,
+  "request_id": "e1215879689340c09d6a3506e400e87e",
+  "retryable": false
+}

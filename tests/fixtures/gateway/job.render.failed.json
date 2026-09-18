@@ -1,0 +1,35 @@
+{
+  "_captured": {
+    "tool": "lana_wait_job",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17",
+    "job_kind": "RENDER"
+  },
+  "job_id": "00000000-0000-4000-8000-000000000001",
+  "kind": "RENDER",
+  "status": "FAILED",
+  "asset_id": null,
+  "progress": 0.1,
+  "phase": "failed",
+  "compute_seconds": 0,
+  "render": {
+    "phase": "failed",
+    "outputs": [],
+    "warnings": [
+      "ASSET_PROXY_SUBSTITUTED: clip → proxy v1"
+    ],
+    "logs_tail": "{\"t\":\"...\",\"event\":\"runner_start\",\"cmd\":\"render\",\"ws\":\"<ws>\"}\n{\"t\":\"...\",\"event\":\"runner_error\",\"code\":\"RENDER_ERROR\",\"message\":\"renderMedia('Reel') falló: Error while downloading <redacted-box-path>/public/sfx/impact.wav: ... 404 ...\"}",
+    "library": null,
+    "render_time_ms": null
+  },
+  "error": {
+    "code": "RENDER_ERROR",
+    "message": "El render falló al compilar o ejecutar tu composición. Mirá render.logs_tail en lana_get_job.",
+    "guidance": "El render falló al compilar o ejecutar tu composición. Mirá render.logs_tail en lana_get_job.",
+    "field_path": null,
+    "retry_after_s": null,
+    "request_id": null,
+    "retryable": false
+  },
+  "gpu_seconds": 7.051056588999927
+}

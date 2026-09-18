@@ -1,0 +1,125 @@
+{
+  "_captured": {
+    "tool": "lana_wait_job",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17",
+    "job_kind": "SILENCE"
+  },
+  "job_id": "00000000-0000-4000-8000-000000000096",
+  "kind": "SILENCE",
+  "status": "SUCCEEDED",
+  "asset_id": "00000000-0000-4000-8000-000000000095",
+  "silence": {
+    "duration_ms": 34325,
+    "noise_db": -35,
+    "min_silence_ms": 150,
+    "rms_window_ms": null,
+    "speech": [
+      {
+        "start_ms": 0,
+        "end_ms": 2977
+      },
+      {
+        "start_ms": 3211,
+        "end_ms": 6985
+      },
+      {
+        "start_ms": 7256,
+        "end_ms": 9777
+      },
+      {
+        "start_ms": 9994,
+        "end_ms": 12188
+      },
+      {
+        "start_ms": 12444,
+        "end_ms": 16232
+      },
+      {
+        "start_ms": 16449,
+        "end_ms": 18163
+      },
+      {
+        "start_ms": 18477,
+        "end_ms": 20572
+      },
+      {
+        "start_ms": 20794,
+        "end_ms": 23243
+      },
+      {
+        "start_ms": 23503,
+        "end_ms": 25264
+      },
+      {
+        "start_ms": 25511,
+        "end_ms": 27674
+      },
+      {
+        "start_ms": 27918,
+        "end_ms": 30092
+      },
+      {
+        "start_ms": 30321,
+        "end_ms": 32832
+      },
+      {
+        "start_ms": 33046,
+        "end_ms": 34325
+      }
+    ],
+    "silences": [
+      {
+        "start_ms": 2977,
+        "end_ms": 3211
+      },
+      {
+        "start_ms": 6985,
+        "end_ms": 7256
+      },
+      {
+        "start_ms": 9777,
+        "end_ms": 9994
+      },
+      {
+        "start_ms": 12188,
+        "end_ms": 12444
+      },
+      {
+        "start_ms": 16232,
+        "end_ms": 16449
+      },
+      {
+        "start_ms": 18163,
+        "end_ms": 18477
+      },
+      {
+        "start_ms": 20572,
+        "end_ms": 20794
+      },
+      {
+        "start_ms": 23243,
+        "end_ms": 23503
+      },
+      {
+        "start_ms": 25264,
+        "end_ms": 25511
+      },
+      {
+        "start_ms": 27674,
+        "end_ms": 27918
+      },
+      {
+        "start_ms": 30092,
+        "end_ms": 30321
+      },
+      {
+        "start_ms": 32832,
+        "end_ms": 33046
+      }
+    ],
+    "rms": null,
+    "result_url": null,
+    "audio_asset_id": "00000000-0000-4000-8000-000000000094"
+  }
+}

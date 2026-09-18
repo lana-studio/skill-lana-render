@@ -1,0 +1,778 @@
+{
+  "_captured": {
+    "tool": "lana_wait_job",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17",
+    "job_kind": "TRANSCRIBE"
+  },
+  "job_id": "00000000-0000-4000-8000-000000000093",
+  "kind": "TRANSCRIBE",
+  "status": "SUCCEEDED",
+  "asset_id": "00000000-0000-4000-8000-000000000092",
+  "transcription": {
+    "language": "es",
+    "duration_s": 34.325,
+    "segments": [
+      {
+        "text": "Here is the thing nobody tells you about this before you actually start doing it yourself and the reason is simple once you notice the pattern everywhere you look you will never see it the same way again after this here is the thing nobody tells you about this before you actually start doing it yourself and the reason is simple once you notice the pattern everywhere you look you will never see it the same way again after this here is the thing nobody tells you about this before you actually start doing it yourself and the",
+        "start_s": 0,
+        "end_s": 27.6,
+        "speaker": null
+      },
+      {
+        "text": "Here is the thing nobody tells you about this before you actually start doing it yourself and the reason is simple once you notice the pattern",
+        "start_s": 27.82,
+        "end_s": 34.12,
+        "speaker": null
+      }
+    ],
+    "words": [
+      {
+        "word": "here",
+        "start_s": 0,
+        "end_s": 0.18,
+        "confidence": null
+      },
+      {
+        "word": "is",
+        "start_s": 0.18,
+        "end_s": 0.3,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 0.3,
+        "end_s": 0.44,
+        "confidence": null
+      },
+      {
+        "word": "thing",
+        "start_s": 0.44,
+        "end_s": 0.62,
+        "confidence": null
+      },
+      {
+        "word": "nobody",
+        "start_s": 0.62,
+        "end_s": 0.94,
+        "confidence": null
+      },
+      {
+        "word": "tells",
+        "start_s": 0.94,
+        "end_s": 1.3,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 1.3,
+        "end_s": 1.5,
+        "confidence": null
+      },
+      {
+        "word": "about",
+        "start_s": 1.5,
+        "end_s": 1.78,
+        "confidence": null
+      },
+      {
+        "word": "this",
+        "start_s": 1.78,
+        "end_s": 2.2,
+        "confidence": null
+      },
+      {
+        "word": "before",
+        "start_s": 2.2,
+        "end_s": 2.8,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 3.08,
+        "end_s": 3.54,
+        "confidence": null
+      },
+      {
+        "word": "actually",
+        "start_s": 3.54,
+        "end_s": 4.02,
+        "confidence": null
+      },
+      {
+        "word": "start",
+        "start_s": 4.02,
+        "end_s": 4.2,
+        "confidence": null
+      },
+      {
+        "word": "doing",
+        "start_s": 4.2,
+        "end_s": 4.44,
+        "confidence": null
+      },
+      {
+        "word": "it",
+        "start_s": 4.44,
+        "end_s": 4.76,
+        "confidence": null
+      },
+      {
+        "word": "yourself",
+        "start_s": 4.76,
+        "end_s": 5.02,
+        "confidence": null
+      },
+      {
+        "word": "and",
+        "start_s": 5.02,
+        "end_s": 5.3,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 5.3,
+        "end_s": 5.52,
+        "confidence": null
+      },
+      {
+        "word": "reason",
+        "start_s": 5.52,
+        "end_s": 5.84,
+        "confidence": null
+      },
+      {
+        "word": "is",
+        "start_s": 5.84,
+        "end_s": 6.4,
+        "confidence": null
+      },
+      {
+        "word": "simple",
+        "start_s": 6.4,
+        "end_s": 6.92,
+        "confidence": null
+      },
+      {
+        "word": "once",
+        "start_s": 7.08,
+        "end_s": 7.34,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 7.34,
+        "end_s": 7.48,
+        "confidence": null
+      },
+      {
+        "word": "notice",
+        "start_s": 7.48,
+        "end_s": 7.72,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 7.72,
+        "end_s": 7.9,
+        "confidence": null
+      },
+      {
+        "word": "pattern",
+        "start_s": 7.9,
+        "end_s": 8.14,
+        "confidence": null
+      },
+      {
+        "word": "everywhere",
+        "start_s": 8.14,
+        "end_s": 8.44,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 8.44,
+        "end_s": 8.64,
+        "confidence": null
+      },
+      {
+        "word": "look",
+        "start_s": 8.64,
+        "end_s": 8.8,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 8.8,
+        "end_s": 8.96,
+        "confidence": null
+      },
+      {
+        "word": "will",
+        "start_s": 8.96,
+        "end_s": 9.22,
+        "confidence": null
+      },
+      {
+        "word": "never",
+        "start_s": 9.22,
+        "end_s": 9.4,
+        "confidence": null
+      },
+      {
+        "word": "see",
+        "start_s": 9.4,
+        "end_s": 9.7,
+        "confidence": null
+      },
+      {
+        "word": "it",
+        "start_s": 9.88,
+        "end_s": 10.1,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 10.1,
+        "end_s": 10.22,
+        "confidence": null
+      },
+      {
+        "word": "same",
+        "start_s": 10.22,
+        "end_s": 10.46,
+        "confidence": null
+      },
+      {
+        "word": "way",
+        "start_s": 10.46,
+        "end_s": 10.62,
+        "confidence": null
+      },
+      {
+        "word": "again",
+        "start_s": 10.62,
+        "end_s": 10.92,
+        "confidence": null
+      },
+      {
+        "word": "after",
+        "start_s": 10.92,
+        "end_s": 11.2,
+        "confidence": null
+      },
+      {
+        "word": "this",
+        "start_s": 11.2,
+        "end_s": 11.6,
+        "confidence": null
+      },
+      {
+        "word": "here",
+        "start_s": 11.6,
+        "end_s": 12.08,
+        "confidence": null
+      },
+      {
+        "word": "is",
+        "start_s": 12.3,
+        "end_s": 12.54,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 12.54,
+        "end_s": 12.76,
+        "confidence": null
+      },
+      {
+        "word": "thing",
+        "start_s": 12.76,
+        "end_s": 12.94,
+        "confidence": null
+      },
+      {
+        "word": "nobody",
+        "start_s": 12.94,
+        "end_s": 13.08,
+        "confidence": null
+      },
+      {
+        "word": "tells",
+        "start_s": 13.08,
+        "end_s": 13.3,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 13.3,
+        "end_s": 13.5,
+        "confidence": null
+      },
+      {
+        "word": "about",
+        "start_s": 13.5,
+        "end_s": 13.82,
+        "confidence": null
+      },
+      {
+        "word": "this",
+        "start_s": 13.82,
+        "end_s": 14.22,
+        "confidence": null
+      },
+      {
+        "word": "before",
+        "start_s": 14.22,
+        "end_s": 14.4,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 14.4,
+        "end_s": 14.76,
+        "confidence": null
+      },
+      {
+        "word": "actually",
+        "start_s": 14.76,
+        "end_s": 14.94,
+        "confidence": null
+      },
+      {
+        "word": "start",
+        "start_s": 14.94,
+        "end_s": 15.12,
+        "confidence": null
+      },
+      {
+        "word": "doing",
+        "start_s": 15.12,
+        "end_s": 15.3,
+        "confidence": null
+      },
+      {
+        "word": "it",
+        "start_s": 15.3,
+        "end_s": 15.62,
+        "confidence": null
+      },
+      {
+        "word": "yourself",
+        "start_s": 15.62,
+        "end_s": 16.02,
+        "confidence": null
+      },
+      {
+        "word": "and",
+        "start_s": 16.34,
+        "end_s": 16.58,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 16.58,
+        "end_s": 16.9,
+        "confidence": null
+      },
+      {
+        "word": "reason",
+        "start_s": 16.9,
+        "end_s": 17.14,
+        "confidence": null
+      },
+      {
+        "word": "is",
+        "start_s": 17.14,
+        "end_s": 17.3,
+        "confidence": null
+      },
+      {
+        "word": "simple",
+        "start_s": 17.3,
+        "end_s": 17.46,
+        "confidence": null
+      },
+      {
+        "word": "once",
+        "start_s": 17.46,
+        "end_s": 17.8,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 17.8,
+        "end_s": 18.18,
+        "confidence": null
+      },
+      {
+        "word": "notice",
+        "start_s": 18.36,
+        "end_s": 18.56,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 18.56,
+        "end_s": 18.8,
+        "confidence": null
+      },
+      {
+        "word": "pattern",
+        "start_s": 18.8,
+        "end_s": 19.26,
+        "confidence": null
+      },
+      {
+        "word": "everywhere",
+        "start_s": 19.26,
+        "end_s": 19.48,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 19.48,
+        "end_s": 19.72,
+        "confidence": null
+      },
+      {
+        "word": "look",
+        "start_s": 19.72,
+        "end_s": 19.94,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 19.94,
+        "end_s": 20.08,
+        "confidence": null
+      },
+      {
+        "word": "will",
+        "start_s": 20.08,
+        "end_s": 20.5,
+        "confidence": null
+      },
+      {
+        "word": "never",
+        "start_s": 20.68,
+        "end_s": 20.9,
+        "confidence": null
+      },
+      {
+        "word": "see",
+        "start_s": 20.9,
+        "end_s": 21.02,
+        "confidence": null
+      },
+      {
+        "word": "it",
+        "start_s": 21.02,
+        "end_s": 21.18,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 21.18,
+        "end_s": 21.56,
+        "confidence": null
+      },
+      {
+        "word": "same",
+        "start_s": 21.56,
+        "end_s": 21.76,
+        "confidence": null
+      },
+      {
+        "word": "way",
+        "start_s": 21.76,
+        "end_s": 21.92,
+        "confidence": null
+      },
+      {
+        "word": "again",
+        "start_s": 21.92,
+        "end_s": 22.16,
+        "confidence": null
+      },
+      {
+        "word": "after",
+        "start_s": 22.16,
+        "end_s": 22.32,
+        "confidence": null
+      },
+      {
+        "word": "this",
+        "start_s": 22.32,
+        "end_s": 22.5,
+        "confidence": null
+      },
+      {
+        "word": "here",
+        "start_s": 22.5,
+        "end_s": 22.68,
+        "confidence": null
+      },
+      {
+        "word": "is",
+        "start_s": 22.68,
+        "end_s": 23.06,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 23.38,
+        "end_s": 23.68,
+        "confidence": null
+      },
+      {
+        "word": "thing",
+        "start_s": 23.68,
+        "end_s": 23.98,
+        "confidence": null
+      },
+      {
+        "word": "nobody",
+        "start_s": 23.98,
+        "end_s": 24.28,
+        "confidence": null
+      },
+      {
+        "word": "tells",
+        "start_s": 24.28,
+        "end_s": 24.6,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 24.6,
+        "end_s": 24.84,
+        "confidence": null
+      },
+      {
+        "word": "about",
+        "start_s": 24.84,
+        "end_s": 25.22,
+        "confidence": null
+      },
+      {
+        "word": "this",
+        "start_s": 25.44,
+        "end_s": 25.64,
+        "confidence": null
+      },
+      {
+        "word": "before",
+        "start_s": 25.64,
+        "end_s": 25.94,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 25.94,
+        "end_s": 26.08,
+        "confidence": null
+      },
+      {
+        "word": "actually",
+        "start_s": 26.08,
+        "end_s": 26.26,
+        "confidence": null
+      },
+      {
+        "word": "start",
+        "start_s": 26.26,
+        "end_s": 26.52,
+        "confidence": null
+      },
+      {
+        "word": "doing",
+        "start_s": 26.52,
+        "end_s": 26.68,
+        "confidence": null
+      },
+      {
+        "word": "it",
+        "start_s": 26.68,
+        "end_s": 26.94,
+        "confidence": null
+      },
+      {
+        "word": "yourself",
+        "start_s": 26.94,
+        "end_s": 27.1,
+        "confidence": null
+      },
+      {
+        "word": "and",
+        "start_s": 27.1,
+        "end_s": 27.32,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 27.32,
+        "end_s": 27.6,
+        "confidence": null
+      },
+      {
+        "word": "reason",
+        "start_s": 27.82,
+        "end_s": 28.06,
+        "confidence": null
+      },
+      {
+        "word": "is",
+        "start_s": 28.06,
+        "end_s": 28.18,
+        "confidence": null
+      },
+      {
+        "word": "simple",
+        "start_s": 28.18,
+        "end_s": 28.42,
+        "confidence": null
+      },
+      {
+        "word": "once",
+        "start_s": 28.42,
+        "end_s": 28.78,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 28.78,
+        "end_s": 29.04,
+        "confidence": null
+      },
+      {
+        "word": "notice",
+        "start_s": 29.04,
+        "end_s": 29.26,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 29.26,
+        "end_s": 29.88,
+        "confidence": null
+      },
+      {
+        "word": "pattern",
+        "start_s": 29.88,
+        "end_s": 30.08,
+        "confidence": null
+      },
+      {
+        "word": "everywhere",
+        "start_s": 30.28,
+        "end_s": 30.42,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 30.42,
+        "end_s": 30.7,
+        "confidence": null
+      },
+      {
+        "word": "look",
+        "start_s": 30.7,
+        "end_s": 30.86,
+        "confidence": null
+      },
+      {
+        "word": "you",
+        "start_s": 30.86,
+        "end_s": 31.1,
+        "confidence": null
+      },
+      {
+        "word": "will",
+        "start_s": 31.1,
+        "end_s": 31.34,
+        "confidence": null
+      },
+      {
+        "word": "never",
+        "start_s": 31.34,
+        "end_s": 31.5,
+        "confidence": null
+      },
+      {
+        "word": "see",
+        "start_s": 31.5,
+        "end_s": 31.64,
+        "confidence": null
+      },
+      {
+        "word": "it",
+        "start_s": 31.64,
+        "end_s": 31.8,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 31.8,
+        "end_s": 31.96,
+        "confidence": null
+      },
+      {
+        "word": "same",
+        "start_s": 31.96,
+        "end_s": 32.1,
+        "confidence": null
+      },
+      {
+        "word": "way",
+        "start_s": 32.1,
+        "end_s": 32.36,
+        "confidence": null
+      },
+      {
+        "word": "again",
+        "start_s": 32.36,
+        "end_s": 32.76,
+        "confidence": null
+      },
+      {
+        "word": "after",
+        "start_s": 32.94,
+        "end_s": 33.14,
+        "confidence": null
+      },
+      {
+        "word": "this",
+        "start_s": 33.14,
+        "end_s": 33.28,
+        "confidence": null
+      },
+      {
+        "word": "here",
+        "start_s": 33.28,
+        "end_s": 33.42,
+        "confidence": null
+      },
+      {
+        "word": "is",
+        "start_s": 33.42,
+        "end_s": 33.56,
+        "confidence": null
+      },
+      {
+        "word": "the",
+        "start_s": 33.56,
+        "end_s": 33.76,
+        "confidence": null
+      },
+      {
+        "word": "thing",
+        "start_s": 33.76,
+        "end_s": 34.12,
+        "confidence": null
+      }
+    ],
+    "speakers": [],
+    "result_url": null
+  }
+}

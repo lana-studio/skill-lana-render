@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "name": "fixture-reel",
+  "composition": "Reel",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "language": "en",
+  "requires": {"lana_mcp_render": ">=1.5.0"},
+  "created_at": "2026-01-01T00:00:00Z",
+  "source": {
+    "file": "raw/clip.mov",
+    "probe": null,
+    "mirror": false,
+    "subject_side": "center",
+    "script_mode": "full"
+  },
+  "assets": {
+    "clip": {
+      "file": "raw/clip.mov",
+      "purpose": "episode",
+      "content_type": "video/quicktime",
+      "size_bytes": 1000,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000",
+      "asset_id": "00000000-0000-4000-8000-000000000000",
+      "ingest_job_id": null,
+      "ingest_status": "SUCCEEDED",
+      "ext": "mp4"
+    }
+  },
+  "fonts": {
+    "pair": "anton",
+    "uses": {"hook": "anton", "titles": "anton", "captions": "anton"},
+    "custom": {}
+  },
+  "library": {
+    "release": null,
+    "items": [],
+    "rejected": []
+  },
+  "jobs": {
+    "transcribe": null,
+    "silence": null,
+    "renders": []
+  },
+  "caps": {}
+}

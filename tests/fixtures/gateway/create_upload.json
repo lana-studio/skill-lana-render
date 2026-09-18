@@ -1,0 +1,17 @@
+{
+  "_captured": {
+    "tool": "lana_create_upload",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17"
+  },
+  "asset_id": "00000000-0000-4000-8000-000000000001",
+  "upload_url": "<redacted>",
+  "method": "PUT",
+  "headers": {
+    "x-ms-blob-type": "BlockBlob",
+    "Content-Type": "application/zip"
+  },
+  "expires_at": "2026-09-17T22:15:38.674648Z",
+  "purpose": "bundle",
+  "next_step": "Subí el archivo con PUT y después llamá lana_confirm_upload(asset_id)."
+}

@@ -1,0 +1,14 @@
+{
+  "_captured": {
+    "tool": "lana_submit_render",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17"
+  },
+  "code": "ASSET_NOT_FOUND",
+  "message": "No existe un asset 00000000-0000-4000-8000-000000000001 para esta cuenta.",
+  "guidance": "No existe un asset con ese id para esta cuenta. Verificá el asset_id que devolvió lana_create_upload. Nota: un asset de otra cuenta también responde 404, nunca 403 — el gateway no confirma la existencia de recursos ajenos.",
+  "field_path": "assets.clip",
+  "retry_after_s": null,
+  "request_id": "f9baa3d9fd8a491e9f8a5fded2a03633",
+  "retryable": false
+}

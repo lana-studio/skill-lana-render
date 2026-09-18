@@ -1,0 +1,33 @@
+{
+  "_captured": {
+    "tool": "lana_confirm_upload",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17"
+  },
+  "asset_id": "00000000-0000-4000-8000-000000000001",
+  "status": "ready",
+  "filename": "sample.zip",
+  "content_type": "application/zip",
+  "size_bytes": 33990,
+  "duration_s": 0,
+  "width": null,
+  "height": null,
+  "created_at": "2026-09-17T12:00:00Z",
+  "read_url": "<redacted>",
+  "rejection_reason": null,
+  "purpose": "bundle",
+  "video_codec": null,
+  "hdr_transfer": null,
+  "fps": null,
+  "derived_from_asset_id": null,
+  "derived_kind": null,
+  "derived_meta": null,
+  "proxy_version": null,
+  "proxy_current": null,
+  "proxy_asset_id": null,
+  "audio_asset_id": null,
+  "hdr_policy": null,
+  "clock": null,
+  "ingest_job_id": null,
+  "ingest_status": null
+}

@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "name": "first-reel",
+  "composition": "Reel",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "language": "en",
+  "requires": { "lana_mcp_render": ">=1.5.0" },
+  "created_at": "2026-09-17T00:00:00Z",
+
+  "source": {
+    "file": "raw/your-take.mov",
+    "probe": null,
+    "mirror": false,
+    "subject_side": "center",
+    "script_mode": "full"
+  },
+
+  "assets": {
+    "clip": {
+      "file": "raw/your-take.mov",
+      "purpose": "episode",
+      "content_type": "video/quicktime",
+      "size_bytes": null,
+      "sha256": null,
+      "asset_id": null,
+      "ingest_job_id": null,
+      "ingest_status": null,
+      "ext": "mp4"
+    }
+  },
+
+  "fonts": {
+    "pair": "anton",
+    "uses": { "hook": "anton", "titles": "anton", "captions": "anton" },
+    "custom": {}
+  },
+
+  "library": {
+    "release": null,
+    "items": [],
+    "rejected": []
+  },
+
+  "jobs": {
+    "transcribe": null,
+    "silence": null,
+    "renders": []
+  },
+
+  "caps": {
+    "service_version": null,
+    "sfx_pack_version": null,
+    "library_release": null,
+    "max_assets": 24,
+    "fetched_at": null
+  }
+}

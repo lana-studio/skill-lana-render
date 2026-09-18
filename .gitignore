@@ -1,0 +1,15 @@
+node_modules/
+__pycache__/
+.DS_Store
+*.part
+out/
+raw/
+lana/
+!scripts/lana/
+lana-pkg/
+skills/*/scripts
+skills/*/template
+skills/*/assets
+skills/*/INSTALLED.json
+.pytest_cache/
+*.pyc

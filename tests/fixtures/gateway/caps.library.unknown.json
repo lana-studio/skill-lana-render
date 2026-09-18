@@ -1,0 +1,106 @@
+{
+  "_captured": {
+    "tool": "lana_get_capabilities(topic=library)",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17"
+  },
+  "library": {
+    "release": "1.0.0",
+    "count": 7,
+    "harness_compatible": true,
+    "entries": [
+      {
+        "id": "sequel-sans-bold-disp",
+        "kind": "font",
+        "ext": "otf",
+        "file": "lib/sequel-sans-bold-disp.otf",
+        "license": "unknown",
+        "attribution_required": true,
+        "size_bytes": 86436,
+        "tags": [
+          "display",
+          "bold"
+        ]
+      },
+      {
+        "id": "white-paper-elements-05",
+        "kind": "overlay",
+        "ext": "webm",
+        "file": "lib/white-paper-elements-05.webm",
+        "license": "unknown",
+        "attribution_required": false,
+        "size_bytes": 466578,
+        "tags": [
+          "paper",
+          "texture",
+          "overlay"
+        ]
+      },
+      {
+        "id": "letra-animada-b",
+        "kind": "overlay",
+        "ext": "webm",
+        "file": "lib/letra-animada-b.webm",
+        "license": "unknown",
+        "attribution_required": false,
+        "size_bytes": 150000,
+        "tags": [
+          "letter",
+          "animated"
+        ]
+      },
+      {
+        "id": "degradado-negro-subtitulos",
+        "kind": "texture",
+        "ext": "png",
+        "file": "lib/degradado-negro-subtitulos.png",
+        "license": "unknown",
+        "attribution_required": false,
+        "size_bytes": 65366,
+        "tags": [
+          "gradient",
+          "black"
+        ]
+      },
+      {
+        "id": "super-8-frame",
+        "kind": "texture",
+        "ext": "png",
+        "file": "lib/super-8-frame.png",
+        "license": "unknown",
+        "attribution_required": false,
+        "size_bytes": 36479,
+        "tags": [
+          "film",
+          "frame"
+        ]
+      },
+      {
+        "id": "broll-c309",
+        "kind": "broll",
+        "ext": "mp4",
+        "file": "lib/broll-c309.mp4",
+        "license": "unknown",
+        "attribution_required": false,
+        "size_bytes": 1210764,
+        "tags": [
+          "broll",
+          "cinematic"
+        ]
+      },
+      {
+        "id": "swoosh-original",
+        "kind": "audio",
+        "ext": "mp3",
+        "file": "lib/swoosh-original.mp3",
+        "license": "unknown",
+        "attribution_required": false,
+        "size_bytes": 30448,
+        "tags": [
+          "sfx",
+          "whoosh"
+        ]
+      }
+    ]
+  }
+}

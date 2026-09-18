@@ -1,0 +1,49 @@
+{
+  "_captured": {
+    "tool": "lana_wait_job",
+    "gateway_version": "1.5.0",
+    "date": "2026-09-17",
+    "job_kind": "RENDER"
+  },
+  "job_id": "00000000-0000-4000-8000-000000000099",
+  "kind": "RENDER",
+  "status": "SUCCEEDED",
+  "asset_id": null,
+  "created_at": "2026-09-17T19:44:21.487000Z",
+  "started_at": "2026-09-17T19:44:30.830000Z",
+  "finished_at": "2026-09-17T19:44:59.097000Z",
+  "progress": 1,
+  "phase": "succeeded",
+  "queue_position": null,
+  "cancel_requested_at": null,
+  "retry_of_job_id": null,
+  "compute_seconds": 0,
+  "transcription": null,
+  "render": {
+    "phase": "succeeded",
+    "outputs": [
+      {
+        "composition_id": "Hello",
+        "asset_id": "00000000-0000-4000-8000-000000000098",
+        "duration_s": 2.026667,
+        "size_bytes": 218670,
+        "width": 1080,
+        "height": 1920,
+        "read_url": "https://stlanadev.blob.core.windows.net/lana-media/FAKE-CONTAINER/FAKE-ASSET/original.mp4?se=2026-01-01T00%3A00%3A00Z&sp=r&apiver=2026-06-06&sr=b&token=FAKE-SIGNATURE-NOT-REAL%3D"
+      }
+    ],
+    "warnings": [],
+    "logs_tail": null,
+    "library": null,
+    "render_time_ms": 7731
+  },
+  "clock": null,
+  "ingest": null,
+  "silence": null,
+  "segment": null,
+  "error": null,
+  "upstream_unconfirmed_since": null,
+  "timed_out": false,
+  "waited_s": 29.024084013988613,
+  "gpu_seconds": 15.377096866999992
+}
