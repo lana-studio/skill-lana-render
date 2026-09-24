@@ -14,10 +14,12 @@ labels: bug
 ## Versions
 
 ```
-# from: cat ~/.claude/skills/lana-reel/VERSION
+# <skill> = ~/.claude/skills/lana-reel (Claude Code) or ~/.agents/skills/lana-reel (Codex)
+
+# from: cat <skill>/VERSION
 version:
 
-# from: python3 ~/.claude/skills/lana-reel/scripts/lana/caps.py limits
+# from: python3 <skill>/scripts/lana/caps.py limits
 service_version:
 render_enabled:
 ```

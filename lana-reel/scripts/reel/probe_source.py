@@ -8,7 +8,8 @@ ffmpeg is a REQUIREMENT here, used for exactly two things: metadata
 at the material — never to transcode, measure silence, or render (that stays
 on the MCP; see the "Don'ts" list this skill ships with). This is the only
 way the agent gets vision of the source: a short clip rendered by the MCP
-isn't something Claude Code can see (the gateway's inline-image response
+isn't something the client can see (Claude Code and Codex included; the
+gateway's inline-image response
 only exists for shared-library refs, and the ingest pipeline doesn't
 currently produce a preview frame for a user's own uploaded footage), so
 looking at a handful of extracted JPEGs is the only path there is.

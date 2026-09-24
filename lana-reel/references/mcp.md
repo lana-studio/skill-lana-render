@@ -11,15 +11,25 @@ If you edit this file you may rewrite the sentence; do not weaken the rule.
 ## 0. Before you start
 
 1. A Lana Studio account (the normal sign-up).
-2. `claude mcp add --scope user --transport http lana https://mcp.lanastudio.pe/mcp` — at
-   **user scope**: without `--scope user` the server exists only in the folder where the command
-   ran, and the next reel, opened in another folder, has no `lana` tools.
-3. In Claude Code: `/mcp` → `lana` → **Authenticate**. The initial 401 is normal — it is what
-   triggers discovery, dynamic client registration and the PKCE flow in the browser.
+2. Register the server, at a scope that applies to every folder:
+   - **Claude Code:** `claude mcp add --scope user --transport http lana https://mcp.lanastudio.pe/mcp`
+     — without `--scope user` the server exists only in the folder where the command ran, and the
+     next reel, opened in another folder, has no `lana` tools.
+   - **Codex:** `codex mcp add lana --url https://mcp.lanastudio.pe/mcp` — there is no `--scope`
+     flag: `~/.codex/config.toml` already applies to every folder.
+3. Log in:
+   - **Claude Code:** `/mcp` → `lana` → **Authenticate**.
+   - **Codex:** `codex mcp login lana` (without a graphical browser: `codex mcp login lana
+     --no-browser`, which prints a URL and accepts the pasted-back callback), then restart Codex
+     so it reloads the server.
+
+   The initial 401 is normal — it is what triggers discovery, dynamic client registration and
+   the PKCE flow in the browser.
 4. Expected scopes: `lana:mcp`, `assets:read`, `assets:write`, `transcription:create`,
    `analysis:create`, `analysis:read`, `render:create`, `render:read`, `jobs:read`. If a call
-   answers `FORBIDDEN_SCOPE`, the message names the scope that is missing: re-authorize in
-   `/mcp` and grant it.
+   answers `FORBIDDEN_SCOPE`, the message names the scope that is missing: re-authorize and grant
+   it (Claude Code: `/mcp` → `lana` → Authenticate; Codex: `codex mcp logout lana && codex mcp
+   login lana`).
 5. **Run the hello render** (`examples/hello-render.md`). One job, about two minutes, and it
    verifies OAuth, scopes, quota, the harness version and that you can download a result.
 

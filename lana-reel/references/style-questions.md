@@ -72,8 +72,8 @@ depends on the group chosen in round 3.
 ## After the questionnaire
 
 ```bash
-python3 ~/.claude/skills/lana-reel/scripts/reel/styles.py remember answers.json
-python3 ~/.claude/skills/lana-reel/scripts/lana/brand.py --emit answers.json   # → lana_set_brand_defaults(**args)
+python3 <skill>/scripts/reel/styles.py remember answers.json
+python3 <skill>/scripts/lana/brand.py --emit answers.json   # → lana_set_brand_defaults(**args)
 ```
 
 `remember` stores the answers locally so they show up as "(last time)" next time; `brand.py`

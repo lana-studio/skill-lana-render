@@ -10,8 +10,8 @@ own; `retryable: false` means something has to change first — retrying is a wa
 
 | Code | HTTP | Retryable | What to do |
 |---|---|---|---|
-| `UNAUTHENTICATED` | 401 | no | Authorize the server: `/mcp` → `lana` → Authenticate. An initial 401 on a fresh install is the normal start of that flow. |
-| `FORBIDDEN_SCOPE` | 403 | no | The message names the missing scope. Re-authorize in `/mcp` and grant it. |
+| `UNAUTHENTICATED` | 401 | no | Authorize the server. Claude Code: `/mcp` → `lana` → Authenticate. Codex: `codex mcp login lana`. An initial 401 on a fresh install is the normal start of that flow. |
+| `FORBIDDEN_SCOPE` | 403 | no | The message names the missing scope. Re-authorize and grant it. Claude Code: `/mcp` → `lana` → Authenticate. Codex: `codex mcp logout lana && codex mcp login lana`. |
 | `TENANT_SUSPENDED` | 403 | no | Account suspended. |
 | `UNKNOWN_LANA_USER` | 403 | no | The authenticated identity has no Lana account behind it. |
 | `DISABLED_USER` | 403 | no | The account is disabled. |

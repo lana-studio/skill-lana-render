@@ -10,10 +10,11 @@ kind in: caps-limits | caps-sfx | caps-brand | caps-library | caps-render |
          transcript | silence | job | asset
 
 `<path>` is a file holding the raw JSON of an MCP tool result — normally the
-one Claude Code persists under `tool-results/`, or one the agent `Write`'d as
-a last resort when that persisted-result path isn't available. `-` reads
-from stdin. `_lib.io.parse_tool_result` tolerates either a bare JSON object
-or one wrapped in something else.
+one the client persists under `tool-results/` (Claude Code does this
+automatically), or one the agent `Write`'d as a last resort when that
+persisted-result path isn't available. `-` reads from stdin.
+`_lib.io.parse_tool_result` tolerates either a bare JSON object or one
+wrapped in something else.
 
 - caps-*: writes lana/caps.<topic>.json (+ `_saved_at`). If the result carries
   `error`/`isError`, exits 1 with the error code.
