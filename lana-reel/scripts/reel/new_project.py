@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """scripts/reel/new_project.py — scaffold a new reel project.
 
-    python3 ~/.claude/skills/lana-reel/scripts/reel/new_project.py <dir> --name <slug>
+    python3 <skill>/scripts/reel/new_project.py <dir> --name <slug>
         [--source <file>] [--copy] [--language en] [--no-install]
 
 1. Creates <dir>/{raw,assets,lana,lana/jobs,lana-pkg,src,out}.

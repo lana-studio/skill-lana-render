@@ -52,7 +52,8 @@ def test_forbidden_scope_message(project_dir):
     job_path = write_job(project_dir, error={"code": "FORBIDDEN_SCOPE", "message": "missing scope render:create"})
     result = run_verify(project_dir, ["--job", str(job_path)])
     assert result.returncode == 1
-    assert "re-authorize with /mcp" in result.stderr
+    assert "re-authorize" in result.stderr
+    assert "grant" in result.stderr
     assert "render:create" in result.stderr
 
 

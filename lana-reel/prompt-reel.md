@@ -1,7 +1,7 @@
 # Brief para tu reel
 
-Copia esto, complétalo y pégalo en Claude Code abierto en la carpeta del reel. Háblale como a tu
-editor. Lo que dejes en blanco te lo pregunta.
+Copia esto, complétalo y pégalo en Claude Code o en Codex abierto en la carpeta del reel. Háblale
+como a tu editor. Lo que dejes en blanco te lo pregunta.
 
 ```
 Hazme un reel con la skill lana-reel.

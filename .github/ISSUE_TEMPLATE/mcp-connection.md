@@ -14,8 +14,11 @@ names are all we need.
 <!-- Tick the last step that worked -->
 
 - [ ] Created a Lana Studio account
-- [ ] `claude mcp add --transport http lana https://mcp.lanastudio.pe/mcp`
-- [ ] `/mcp` → `lana` → Authenticate finished in the browser
+- [ ] Registered the server (Claude Code: `claude mcp add --transport http lana
+      https://mcp.lanastudio.pe/mcp`; Codex: `codex mcp add lana --url
+      https://mcp.lanastudio.pe/mcp`)
+- [ ] Logged in and it finished in the browser (Claude Code: `/mcp` → `lana` → Authenticate;
+      Codex: `codex mcp login lana`)
 - [ ] `lana_get_capabilities(topic="limits")` answered
 - [ ] The hello render succeeded
 
@@ -39,4 +42,4 @@ retryable:
 ## Environment
 
 - OS and version:
-- Claude Code version:
+- Client and version: <!-- Claude Code version, or `codex --version` -->

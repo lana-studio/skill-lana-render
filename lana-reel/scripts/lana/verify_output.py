@@ -10,7 +10,9 @@ render and any submit): `ASSET_ERROR` under `assets.<font>` -> "premium too
 old for purpose=font"; a `logs_tail` mentioning `public/sfx/` with a 404 ->
 "harness too old: SFX pack not mounted"; `RENDER_NOT_ENABLED` /
 `PLAN_NOT_ELIGIBLE` -> "render gate: check your plan"; `FORBIDDEN_SCOPE` ->
-"re-authorize with /mcp and grant <scope>".
+"re-authorize the lana server and grant <scope>" (names both recovery paths:
+Claude Code's /mcp -> lana -> Authenticate and Codex's `codex mcp logout lana
+&& codex mcp login lana`).
 
 With --file (REQUIRED for the final render — ffmpeg is used here only to
 verify, never to render): `ffprobe` duration (`!!` if it differs from the
@@ -59,7 +61,12 @@ def interpret_error(job: dict) -> str | None:
         # separate "scope" field — FORBIDDEN_SCOPE names the missing scope
         # inside `message` itself ("el detalle lo nombra" per the error
         # catalog's own guidance), which is always present (required field).
-        return f"re-authorize with /mcp and grant {error.get('message', '')}"
+        scope = error.get("message", "")
+        return (
+            f"re-authorize the lana server and grant {scope} "
+            "(Claude Code: /mcp -> lana -> Authenticate; "
+            "Codex: codex mcp logout lana && codex mcp login lana)"
+        )
     if code:
         return f"{code}: {error.get('message', '')}"
     return None

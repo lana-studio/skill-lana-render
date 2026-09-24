@@ -3,9 +3,30 @@
 This repository is versioned together with the `lana-mcp-render` service: major and minor
 match the minimum service version it needs; a patch release changes only the client. Dates are the release date of the tag.
 
-## Unreleased — install by asking Claude Code
+## Unreleased — install by asking Claude Code or Codex
 
 Client-only change: still requires `lana-mcp-render >= 1.5.0`.
+
+### Codex CLI
+
+- **Codex CLI is now a supported client for the `lana` MCP server**, alongside Claude Code. The
+  skill installs to `~/.agents/skills/lana-reel` on Codex (`~/.claude/skills/lana-reel` on Claude
+  Code, unchanged) and registers with `codex mcp add lana --url https://mcp.lanastudio.pe/mcp` —
+  there is no `--scope` flag to get wrong, `~/.codex/config.toml` already applies to every folder.
+  Login is `codex mcp login lana` (or `--no-browser` without a graphical browser).
+- **Skill files are path-agnostic now.** Every command inside `lana-reel/` that used to hardcode
+  `~/.claude/skills/lana-reel` now says `<skill>`, defined once at the top of `SKILL.md` as "the
+  folder that contains this SKILL.md". `README.md` keeps concrete per-client paths, since it is
+  what installs the skill in the first place.
+- **`README.md`'s install steps branch by client only where they actually differ**: a new "Step 0
+  — Which client are you" table, then registering the MCP server, logging in, restarting, and
+  what the user runs on your behalf (Claude Code's `!` prefix has no Codex equivalent — Codex asks
+  the user to run the command in another terminal and report back).
+- Error messages and reference docs that pointed only at `/mcp` → `lana` → Authenticate
+  (`verify_output.py`, `references/errors-limits-quotas.md`, `references/mcp.md`) now name both
+  recovery paths.
+- Codex CLI support is new and only partly verified — see `README.md`, section "Not in this
+  version".
 
 - **One install document: `README.md`.** The user pastes one line into Claude Code with the
   repository URL; the agent clones it and follows the README's numbered steps (platform,
