@@ -178,8 +178,8 @@ There is no `--scope` flag: `~/.codex/config.toml` already applies to every fold
    - Shows a different URL → `codex mcp remove lana`, then add it as below.
    - Not found → add it:
 2. `codex mcp add lana --url https://mcp.lanastudio.pe/mcp`
-3. Verify: `codex mcp get lana` shows `transport: streamable_http` and the URL above. It is normal
-   for it to say it needs authentication at this point.
+3. Verify: `codex mcp get lana` shows `transport: streamable_http` and the URL above.
+   `codex mcp list` shows `Auth: OAuth` for it; the login itself is step 7.
 
 ### Step 7 — Hand over to the user: restart and log in
 

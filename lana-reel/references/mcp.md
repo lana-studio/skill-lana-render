@@ -27,8 +27,9 @@ If you edit this file you may rewrite the sentence; do not weaken the rule.
    the PKCE flow in the browser.
 4. Expected scopes: `lana:mcp`, `assets:read`, `assets:write`, `transcription:create`,
    `analysis:create`, `analysis:read`, `render:create`, `render:read`, `jobs:read`. If a call
-   answers `FORBIDDEN_SCOPE`, the message names the scope that is missing: re-authorize in
-   `/mcp` and grant it.
+   answers `FORBIDDEN_SCOPE`, the message names the scope that is missing: re-authorize and grant
+   it (Claude Code: `/mcp` → `lana` → Authenticate; Codex: `codex mcp logout lana && codex mcp
+   login lana`).
 5. **Run the hello render** (`examples/hello-render.md`). One job, about two minutes, and it
    verifies OAuth, scopes, quota, the harness version and that you can download a result.
 
